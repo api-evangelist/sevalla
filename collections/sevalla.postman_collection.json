@@ -1,0 +1,417 @@
+{
+  "info": {
+    "name": "Sevalla API",
+    "description": "The Sevalla API (https://api.sevalla.com/v3) lets you deploy, scale, and manage applications, deployments, managed databases, static sites, S3-compatible object storage, pipelines, and operations. Authenticate every request with a Bearer API token.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.sevalla.com/v3",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Applications",
+      "item": [
+        {
+          "name": "List all applications",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/applications",
+              "host": ["{{baseUrl}}"],
+              "path": ["applications"]
+            },
+            "description": "List all applications for the company."
+          }
+        },
+        {
+          "name": "Create a new application",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"my-app\",\n  \"repo_url\": \"https://github.com/acme/my-app\",\n  \"branch\": \"main\",\n  \"build_type\": \"buildpacks\",\n  \"pod_size\": \"c1\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/applications",
+              "host": ["{{baseUrl}}"],
+              "path": ["applications"]
+            },
+            "description": "Create a new application deployed from Git or Docker."
+          }
+        },
+        {
+          "name": "Retrieve application details",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/applications/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["applications", ":id"],
+              "variable": [
+                { "key": "id", "value": "", "description": "The application ID." }
+              ]
+            },
+            "description": "Retrieve details for a single application."
+          }
+        },
+        {
+          "name": "Suspend a running application",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/applications/:id/suspend",
+              "host": ["{{baseUrl}}"],
+              "path": ["applications", ":id", "suspend"],
+              "variable": [
+                { "key": "id", "value": "", "description": "The application ID." }
+              ]
+            },
+            "description": "Suspend a running application."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Deployments",
+      "item": [
+        {
+          "name": "List deployments",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/applications/:id/deployments",
+              "host": ["{{baseUrl}}"],
+              "path": ["applications", ":id", "deployments"],
+              "variable": [
+                { "key": "id", "value": "", "description": "The application ID." }
+              ]
+            },
+            "description": "List deployments for an application."
+          }
+        },
+        {
+          "name": "Trigger a deployment",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"branch\": \"main\",\n  \"clear_cache\": false\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/applications/:id/deployments",
+              "host": ["{{baseUrl}}"],
+              "path": ["applications", ":id", "deployments"],
+              "variable": [
+                { "key": "id", "value": "", "description": "The application ID." }
+              ]
+            },
+            "description": "Trigger a new deployment for an application."
+          }
+        },
+        {
+          "name": "Roll back to a previous deployment",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/applications/:id/deployments/:deploymentId/rollback",
+              "host": ["{{baseUrl}}"],
+              "path": ["applications", ":id", "deployments", ":deploymentId", "rollback"],
+              "variable": [
+                { "key": "id", "value": "", "description": "The application ID." },
+                { "key": "deploymentId", "value": "", "description": "The deployment ID." }
+              ]
+            },
+            "description": "Roll back to a previous deployment."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Databases",
+      "item": [
+        {
+          "name": "List databases",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/databases",
+              "host": ["{{baseUrl}}"],
+              "path": ["databases"]
+            },
+            "description": "List managed databases."
+          }
+        },
+        {
+          "name": "Create a database",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"my-db\",\n  \"type\": \"postgresql\",\n  \"version\": \"16\",\n  \"resource_type\": \"db1\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/databases",
+              "host": ["{{baseUrl}}"],
+              "path": ["databases"]
+            },
+            "description": "Provision a PostgreSQL, MySQL, MariaDB, MongoDB, Redis, or Valkey database."
+          }
+        },
+        {
+          "name": "Create a database backup",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/databases/:id/backups",
+              "host": ["{{baseUrl}}"],
+              "path": ["databases", ":id", "backups"],
+              "variable": [
+                { "key": "id", "value": "", "description": "The database ID." }
+              ]
+            },
+            "description": "Create a manual backup for a database."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Static Sites",
+      "item": [
+        {
+          "name": "List static sites",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/static-sites",
+              "host": ["{{baseUrl}}"],
+              "path": ["static-sites"]
+            },
+            "description": "List static sites."
+          }
+        },
+        {
+          "name": "Create a static site",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"my-site\",\n  \"repo_url\": \"https://github.com/acme/my-site\",\n  \"branch\": \"main\",\n  \"build_command\": \"npm run build\",\n  \"published_directory\": \"dist\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/static-sites",
+              "host": ["{{baseUrl}}"],
+              "path": ["static-sites"]
+            },
+            "description": "Create a Git-backed static site."
+          }
+        },
+        {
+          "name": "Deploy a static site",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/static-sites/:id/deployments",
+              "host": ["{{baseUrl}}"],
+              "path": ["static-sites", ":id", "deployments"],
+              "variable": [
+                { "key": "id", "value": "", "description": "The static site ID." }
+              ]
+            },
+            "description": "Trigger a build and deployment for a static site."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Object Storage",
+      "item": [
+        {
+          "name": "List object storage buckets",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/object-storages",
+              "host": ["{{baseUrl}}"],
+              "path": ["object-storages"]
+            },
+            "description": "List S3-compatible object storage buckets."
+          }
+        },
+        {
+          "name": "Create an object storage bucket",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"my-bucket\",\n  \"public\": false\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/object-storages",
+              "host": ["{{baseUrl}}"],
+              "path": ["object-storages"]
+            },
+            "description": "Create an S3-compatible object storage bucket (Cloudflare R2)."
+          }
+        },
+        {
+          "name": "List objects in a bucket",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/object-storages/:id/objects",
+              "host": ["{{baseUrl}}"],
+              "path": ["object-storages", ":id", "objects"],
+              "variable": [
+                { "key": "id", "value": "", "description": "The bucket ID." }
+              ]
+            },
+            "description": "List objects stored in a bucket."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Pipelines",
+      "item": [
+        {
+          "name": "List pipelines",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/pipelines",
+              "host": ["{{baseUrl}}"],
+              "path": ["pipelines"]
+            },
+            "description": "List promotion pipelines."
+          }
+        },
+        {
+          "name": "Create a pipeline",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"prod-pipeline\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/pipelines",
+              "host": ["{{baseUrl}}"],
+              "path": ["pipelines"]
+            },
+            "description": "Create a multi-stage promotion pipeline."
+          }
+        },
+        {
+          "name": "Promote an application between stages",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"source_stage_id\": \"\",\n  \"target_stage_id\": \"\",\n  \"application_id\": \"\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/pipelines/:id/promote",
+              "host": ["{{baseUrl}}"],
+              "path": ["pipelines", ":id", "promote"],
+              "variable": [
+                { "key": "id", "value": "", "description": "The pipeline ID." }
+              ]
+            },
+            "description": "Promote an application from one pipeline stage to another."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Company",
+      "item": [
+        {
+          "name": "Get company usage data",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/company/usage",
+              "host": ["{{baseUrl}}"],
+              "path": ["company", "usage"]
+            },
+            "description": "Retrieve usage and cost data for the company."
+          }
+        },
+        {
+          "name": "List company users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/company/users",
+              "host": ["{{baseUrl}}"],
+              "path": ["company", "users"]
+            },
+            "description": "List users in the company."
+          }
+        },
+        {
+          "name": "List API keys",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api-keys",
+              "host": ["{{baseUrl}}"],
+              "path": ["api-keys"]
+            },
+            "description": "List API keys for the company."
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,95 @@
+aid: sevalla
+name: Sevalla
+review:
+  question: Does Sevalla expose a documented public WebSocket API?
+  answer: partial
+  date: '2026-07-01'
+  reviewer: API Evangelist
+  asyncapiSpecCreated: false
+  asyncapiScopeNote: |
+    Sevalla's public API is a REST (HTTPS) surface at
+    https://api.sevalla.com/v3 covering applications, deployments, databases,
+    static sites, object storage, pipelines, and operations. The reference
+    documents one WebSocket-style surface - an interactive process terminal
+    (POST /applications/{id}/processes/{processId}/terminal upgrades to a
+    WebSocket) - but this is an operational shell channel, not an
+    event/message API, and no channels, message payloads, or bindings are
+    documented for it. No AsyncAPI document was authored because there is no
+    documented event-streaming or pub/sub surface to model; the terminal is a
+    single interactive session upgrade rather than a message-driven API.
+findings:
+  summary: |
+    Sevalla (a Kinsta product, launched 2024) publishes a REST API with 200+
+    endpoints at https://api.sevalla.com/v3, authenticated with a Bearer API
+    token where a single token authenticates every endpoint. The API is
+    organized around Applications, Deployments, Databases, Static Sites,
+    Object Storage, Pipelines, Load Balancers, Projects, Webhooks, API Keys,
+    and operational Metrics/Logs. The only WebSocket surface is the
+    interactive process terminal, which upgrades an application process to a
+    shell session over WebSocket; it is an operational convenience, not a
+    documented realtime event/message API. Asynchronous event delivery to
+    consumers is instead provided through outbound HTTP webhooks
+    (/webhooks + deliveries), which is a REST push mechanism, not a
+    WebSocket subscription.
+  transports:
+    - protocol: REST
+      scheme: https
+      baseURL: https://api.sevalla.com/v3
+      documented: true
+    - protocol: WebSocket
+      scheme: wss
+      documented: partial
+      note: >-
+        POST /applications/{id}/processes/{processId}/terminal upgrades to a
+        WebSocket for an interactive shell session. It is an operational
+        terminal channel with no documented message schema, channels, or
+        bindings - not an event/message API.
+    - protocol: Webhooks
+      scheme: https
+      documented: true
+      note: >-
+        Outbound HTTP webhooks with delivery tracking provide asynchronous
+        event notification to consumer-supplied endpoints. This is REST push,
+        not a WebSocket subscription.
+  endpointsConfirmedRest:
+    - GET    https://api.sevalla.com/v3/applications
+    - POST   https://api.sevalla.com/v3/applications
+    - GET    https://api.sevalla.com/v3/applications/{id}
+    - PATCH  https://api.sevalla.com/v3/applications/{id}
+    - DELETE https://api.sevalla.com/v3/applications/{id}
+    - POST   https://api.sevalla.com/v3/applications/{id}/deployments
+    - GET    https://api.sevalla.com/v3/applications/{id}/deployments/{deploymentId}
+    - POST   https://api.sevalla.com/v3/applications/{id}/deployments/{deploymentId}/rollback
+    - GET    https://api.sevalla.com/v3/databases
+    - POST   https://api.sevalla.com/v3/databases
+    - POST   https://api.sevalla.com/v3/databases/{id}/backups
+    - GET    https://api.sevalla.com/v3/static-sites
+    - POST   https://api.sevalla.com/v3/static-sites/{id}/deployments
+    - GET    https://api.sevalla.com/v3/object-storages
+    - POST   https://api.sevalla.com/v3/object-storages
+    - GET    https://api.sevalla.com/v3/pipelines
+    - POST   https://api.sevalla.com/v3/pipelines/{id}/promote
+    - GET    https://api.sevalla.com/v3/company/usage
+    - GET    https://api.sevalla.com/v3/company/users
+    - GET    https://api.sevalla.com/v3/api-keys
+    - POST   https://api.sevalla.com/v3/webhooks
+sources:
+  - url: https://api-docs.sevalla.com/
+    type: APIReference
+    note: Base URL https://api.sevalla.com/v3, Bearer auth, 200+ REST endpoints.
+  - url: https://docs.sevalla.com/
+    type: Documentation
+    note: Platform docs for application, database, static-site, and object-storage hosting.
+  - url: https://github.com/sevalla-hosting
+    type: GitHubOrganization
+    note: Official Sevalla GitHub organization.
+actions:
+  asyncapiPath: null
+  apisYmlUpdated: true
+  reason: |
+    The public API is REST. The single WebSocket surface is an interactive
+    process terminal (an operational shell upgrade), not a documented
+    event/message API, so no AsyncAPI document was authored. Asynchronous
+    consumer notification is delivered via outbound HTTP webhooks, which are
+    modeled as part of the REST Operations surface rather than a WebSocket
+    subscription.

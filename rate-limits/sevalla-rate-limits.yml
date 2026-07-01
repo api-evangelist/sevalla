@@ -1,0 +1,70 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Sevalla
+providerId: sevalla
+created: '2026-07-01'
+modified: '2026-07-01'
+reconciled: false
+tags:
+- Hosting
+- PaaS
+- Cloud
+- Deployment
+- Rate Limiting
+- Quotas
+- Throttling
+description: >-
+  The Sevalla API (https://api.sevalla.com/v3) authenticates every request with
+  a Bearer API token and applies per-token / per-company rate limiting to
+  protect the platform. Exact per-endpoint request-per-minute values are not
+  published in a single normalized table; throttled requests return HTTP 429.
+  Beyond API request limits, the platform enforces resource quotas per plan and
+  fair-use policies (for example on free static-site bandwidth and build
+  minutes, and on object storage).
+notes: >-
+  Confirm specific per-endpoint and per-company request-per-minute limits,
+  429 response headers, and any Retry-After semantics in the Sevalla API
+  reference on reconciliation; values are not fully published as of this
+  artifact.
+sources:
+- https://api-docs.sevalla.com/
+- https://docs.sevalla.com/
+responseCodes:
+  throttled: 429
+limits:
+- name: API Requests
+  scope: token
+  metric: requests
+  limit: see provider documentation
+  notes: Per-token / per-company request rate limiting on api.sevalla.com/v3; throttled requests return 429.
+- name: Static Site Bandwidth (Free tier)
+  scope: account
+  metric: gigabytes
+  limit: 100 per month
+  notes: Free static-site tier includes 100 GB/month of bandwidth under fair use.
+- name: Static Site Build Minutes (Free tier)
+  scope: account
+  metric: minutes
+  limit: 600 per month
+  notes: Free static-site tier includes 600 build minutes/month.
+- name: Static Sites per Account
+  scope: account
+  metric: sites
+  limit: 100
+  notes: Up to 100 static sites per account on the free tier.
+- name: Object Storage Fair Use
+  scope: account
+  metric: usage
+  limit: fair use
+  notes: Fair-use policy applies to object storage in addition to per-GB billing.
+policies:
+- name: Bearer Token Authentication
+  description: Every API request must include a valid Bearer API token; one token authenticates all endpoints.
+- name: Fair Use
+  description: Fair-use policies apply to free static-site hosting and object storage tiers.
+- name: Backoff Strategy
+  description: Clients should implement exponential backoff with jitter on 429 responses and honor any Retry-After header.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

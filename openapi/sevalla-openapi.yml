@@ -1,0 +1,1158 @@
+openapi: 3.0.3
+info:
+  title: Sevalla API
+  description: >-
+    The Sevalla API lets you deploy, scale, and manage your entire cloud
+    infrastructure programmatically - applications, deployments, managed
+    databases, static sites, S3-compatible object storage, pipelines, and
+    operational metrics. Sevalla is a Kinsta product built on Google Cloud
+    Platform and Cloudflare. A single API token authenticates every endpoint.
+  termsOfService: https://sevalla.com/legal/terms-of-service/
+  contact:
+    name: Sevalla Support
+    url: https://sevalla.com/contact/
+  version: v3
+servers:
+  - url: https://api.sevalla.com/v3
+    description: Production
+security:
+  - bearerAuth: []
+tags:
+  - name: Applications
+    description: Deploy and manage applications from Git or Docker.
+  - name: Deployments
+    description: Trigger, inspect, and roll back deployments.
+  - name: Databases
+    description: Provision and manage managed databases.
+  - name: Static Sites
+    description: Build and deploy Git-backed static sites to the edge.
+  - name: Object Storage
+    description: S3-compatible object storage buckets.
+  - name: Pipelines
+    description: Multi-stage promotion pipelines and preview environments.
+  - name: Operations
+    description: Metrics, logs, webhooks, and reference resources.
+  - name: Company
+    description: Company users, projects, usage, and API keys.
+paths:
+  /applications:
+    get:
+      operationId: listApplications
+      tags:
+        - Applications
+      summary: List all applications
+      parameters:
+        - $ref: '#/components/parameters/CompanyId'
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Offset'
+      responses:
+        '200':
+          description: A paginated list of applications.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationList'
+    post:
+      operationId: createApplication
+      tags:
+        - Applications
+      summary: Create a new application
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateApplicationRequest'
+      responses:
+        '201':
+          description: The created application.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Application'
+  /applications/{id}:
+    parameters:
+      - $ref: '#/components/parameters/ResourceId'
+    get:
+      operationId: getApplication
+      tags:
+        - Applications
+      summary: Retrieve application details
+      responses:
+        '200':
+          description: The application.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Application'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      operationId: updateApplication
+      tags:
+        - Applications
+      summary: Update an application
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateApplicationRequest'
+      responses:
+        '200':
+          description: The updated application.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Application'
+    delete:
+      operationId: deleteApplication
+      tags:
+        - Applications
+      summary: Delete an application
+      responses:
+        '204':
+          description: The application was deleted.
+  /applications/{id}/suspend:
+    parameters:
+      - $ref: '#/components/parameters/ResourceId'
+    post:
+      operationId: suspendApplication
+      tags:
+        - Applications
+      summary: Suspend a running application
+      responses:
+        '200':
+          description: The application is being suspended.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationStatus'
+  /applications/{id}/activate:
+    parameters:
+      - $ref: '#/components/parameters/ResourceId'
+    post:
+      operationId: activateApplication
+      tags:
+        - Applications
+      summary: Activate a suspended application
+      responses:
+        '200':
+          description: The application is being activated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationStatus'
+  /applications/{id}/deployments:
+    parameters:
+      - $ref: '#/components/parameters/ResourceId'
+    get:
+      operationId: listDeployments
+      tags:
+        - Deployments
+      summary: List deployments for an application
+      responses:
+        '200':
+          description: A list of deployments.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeploymentList'
+    post:
+      operationId: createDeployment
+      tags:
+        - Deployments
+      summary: Trigger a new deployment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateDeploymentRequest'
+      responses:
+        '201':
+          description: The triggered deployment.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Deployment'
+  /applications/{id}/deployments/{deploymentId}:
+    parameters:
+      - $ref: '#/components/parameters/ResourceId'
+      - $ref: '#/components/parameters/DeploymentId'
+    get:
+      operationId: getDeployment
+      tags:
+        - Deployments
+      summary: Get deployment details
+      responses:
+        '200':
+          description: The deployment.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Deployment'
+  /applications/{id}/deployments/{deploymentId}/rollback:
+    parameters:
+      - $ref: '#/components/parameters/ResourceId'
+      - $ref: '#/components/parameters/DeploymentId'
+    post:
+      operationId: rollbackDeployment
+      tags:
+        - Deployments
+      summary: Roll back to a previous deployment
+      responses:
+        '200':
+          description: The rollback deployment.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Deployment'
+  /applications/{id}/environment-variables:
+    parameters:
+      - $ref: '#/components/parameters/ResourceId'
+    get:
+      operationId: listEnvironmentVariables
+      tags:
+        - Applications
+      summary: List environment variables
+      responses:
+        '200':
+          description: A list of environment variables.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  environment_variables:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/EnvironmentVariable'
+    post:
+      operationId: createEnvironmentVariable
+      tags:
+        - Applications
+      summary: Create an environment variable
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnvironmentVariable'
+      responses:
+        '201':
+          description: The created environment variable.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnvironmentVariable'
+  /databases:
+    get:
+      operationId: listDatabases
+      tags:
+        - Databases
+      summary: List databases
+      parameters:
+        - $ref: '#/components/parameters/CompanyId'
+      responses:
+        '200':
+          description: A list of databases.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatabaseList'
+    post:
+      operationId: createDatabase
+      tags:
+        - Databases
+      summary: Create a database
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateDatabaseRequest'
+      responses:
+        '201':
+          description: The created database.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Database'
+  /databases/{id}:
+    parameters:
+      - $ref: '#/components/parameters/ResourceId'
+    get:
+      operationId: getDatabase
+      tags:
+        - Databases
+      summary: Get database details
+      responses:
+        '200':
+          description: The database.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Database'
+    delete:
+      operationId: deleteDatabase
+      tags:
+        - Databases
+      summary: Delete a database
+      responses:
+        '204':
+          description: The database was deleted.
+  /databases/{id}/backups:
+    parameters:
+      - $ref: '#/components/parameters/ResourceId'
+    get:
+      operationId: listBackups
+      tags:
+        - Databases
+      summary: List database backups
+      responses:
+        '200':
+          description: A list of backups.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  backups:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Backup'
+    post:
+      operationId: createBackup
+      tags:
+        - Databases
+      summary: Create a database backup
+      responses:
+        '201':
+          description: The created backup.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Backup'
+  /static-sites:
+    get:
+      operationId: listStaticSites
+      tags:
+        - Static Sites
+      summary: List static sites
+      parameters:
+        - $ref: '#/components/parameters/CompanyId'
+      responses:
+        '200':
+          description: A list of static sites.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StaticSiteList'
+    post:
+      operationId: createStaticSite
+      tags:
+        - Static Sites
+      summary: Create a static site
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateStaticSiteRequest'
+      responses:
+        '201':
+          description: The created static site.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StaticSite'
+  /static-sites/{id}:
+    parameters:
+      - $ref: '#/components/parameters/ResourceId'
+    get:
+      operationId: getStaticSite
+      tags:
+        - Static Sites
+      summary: Get a static site
+      responses:
+        '200':
+          description: The static site.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StaticSite'
+    delete:
+      operationId: deleteStaticSite
+      tags:
+        - Static Sites
+      summary: Delete a static site
+      responses:
+        '204':
+          description: The static site was deleted.
+  /static-sites/{id}/deployments:
+    parameters:
+      - $ref: '#/components/parameters/ResourceId'
+    post:
+      operationId: deployStaticSite
+      tags:
+        - Static Sites
+      summary: Deploy a static site
+      responses:
+        '201':
+          description: The triggered deployment.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Deployment'
+  /object-storages:
+    get:
+      operationId: listObjectStorages
+      tags:
+        - Object Storage
+      summary: List object storage buckets
+      parameters:
+        - $ref: '#/components/parameters/CompanyId'
+      responses:
+        '200':
+          description: A list of buckets.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectStorageList'
+    post:
+      operationId: createObjectStorage
+      tags:
+        - Object Storage
+      summary: Create an object storage bucket
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateObjectStorageRequest'
+      responses:
+        '201':
+          description: The created bucket.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectStorage'
+  /object-storages/{id}:
+    parameters:
+      - $ref: '#/components/parameters/ResourceId'
+    get:
+      operationId: getObjectStorage
+      tags:
+        - Object Storage
+      summary: Get an object storage bucket
+      responses:
+        '200':
+          description: The bucket.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectStorage'
+    delete:
+      operationId: deleteObjectStorage
+      tags:
+        - Object Storage
+      summary: Delete an object storage bucket
+      responses:
+        '204':
+          description: The bucket was deleted.
+  /object-storages/{id}/objects:
+    parameters:
+      - $ref: '#/components/parameters/ResourceId'
+    get:
+      operationId: listObjects
+      tags:
+        - Object Storage
+      summary: List objects in a bucket
+      responses:
+        '200':
+          description: A list of objects.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  objects:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/StorageObject'
+  /pipelines:
+    get:
+      operationId: listPipelines
+      tags:
+        - Pipelines
+      summary: List pipelines
+      parameters:
+        - $ref: '#/components/parameters/CompanyId'
+      responses:
+        '200':
+          description: A list of pipelines.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  pipelines:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Pipeline'
+    post:
+      operationId: createPipeline
+      tags:
+        - Pipelines
+      summary: Create a pipeline
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePipelineRequest'
+      responses:
+        '201':
+          description: The created pipeline.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pipeline'
+  /pipelines/{id}/promote:
+    parameters:
+      - $ref: '#/components/parameters/ResourceId'
+    post:
+      operationId: promotePipeline
+      tags:
+        - Pipelines
+      summary: Promote an application between pipeline stages
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                source_stage_id:
+                  type: string
+                target_stage_id:
+                  type: string
+                application_id:
+                  type: string
+      responses:
+        '200':
+          description: The promotion result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationStatus'
+  /company/usage:
+    get:
+      operationId: getCompanyUsage
+      tags:
+        - Company
+      summary: Get company usage data
+      parameters:
+        - $ref: '#/components/parameters/CompanyId'
+      responses:
+        '200':
+          description: Usage data for the company.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usage'
+  /company/users:
+    get:
+      operationId: listCompanyUsers
+      tags:
+        - Company
+      summary: List company users
+      parameters:
+        - $ref: '#/components/parameters/CompanyId'
+      responses:
+        '200':
+          description: A list of users.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  users:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+  /api-keys:
+    get:
+      operationId: listApiKeys
+      tags:
+        - Company
+      summary: List API keys
+      responses:
+        '200':
+          description: A list of API keys.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  api_keys:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ApiKey'
+    post:
+      operationId: createApiKey
+      tags:
+        - Company
+      summary: Create an API key
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+              properties:
+                name:
+                  type: string
+                role:
+                  type: string
+      responses:
+        '201':
+          description: The created API key.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKey'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: apiToken
+      description: >-
+        Provide your Sevalla API token as a bearer token in the Authorization
+        header. Create a token from the Sevalla dashboard; one token
+        authenticates every endpoint.
+  parameters:
+    ResourceId:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the resource.
+      schema:
+        type: string
+    DeploymentId:
+      name: deploymentId
+      in: path
+      required: true
+      description: The unique identifier of the deployment.
+      schema:
+        type: string
+    CompanyId:
+      name: company
+      in: query
+      required: false
+      description: The company (organization) identifier to scope the request.
+      schema:
+        type: string
+    Limit:
+      name: limit
+      in: query
+      required: false
+      description: Maximum number of items to return.
+      schema:
+        type: integer
+        default: 20
+        maximum: 100
+    Offset:
+      name: offset
+      in: query
+      required: false
+      description: Number of items to skip for pagination.
+      schema:
+        type: integer
+        default: 0
+  responses:
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Error:
+      type: object
+      properties:
+        status:
+          type: integer
+          description: HTTP status code.
+        message:
+          type: string
+          description: Human-readable error message.
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              key:
+                type: string
+              message:
+                type: string
+      required:
+        - status
+        - message
+    OperationStatus:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+          enum:
+            - pending
+            - running
+            - success
+            - failed
+        message:
+          type: string
+    Application:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        display_name:
+          type: string
+        status:
+          type: string
+          enum:
+            - active
+            - suspended
+            - deploying
+            - failed
+        repo_url:
+          type: string
+        branch:
+          type: string
+        auto_deploy:
+          type: boolean
+        default_url:
+          type: string
+        cluster:
+          type: string
+          description: Google Cloud region / cluster the app runs in.
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    ApplicationList:
+      type: object
+      properties:
+        applications:
+          type: array
+          items:
+            $ref: '#/components/schemas/Application'
+        total_count:
+          type: integer
+    CreateApplicationRequest:
+      type: object
+      required:
+        - name
+        - repo_url
+      properties:
+        name:
+          type: string
+        repo_url:
+          type: string
+        branch:
+          type: string
+          default: main
+        auto_deploy:
+          type: boolean
+          default: true
+        build_type:
+          type: string
+          enum:
+            - buildpacks
+            - dockerfile
+            - nixpacks
+        pod_size:
+          type: string
+          description: 'Pod size code, e.g. hobby, s1, s2, c1.'
+        cluster:
+          type: string
+        env:
+          type: object
+          additionalProperties:
+            type: string
+    UpdateApplicationRequest:
+      type: object
+      properties:
+        display_name:
+          type: string
+        branch:
+          type: string
+        auto_deploy:
+          type: boolean
+        pod_size:
+          type: string
+    Deployment:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+          enum:
+            - queued
+            - building
+            - deploying
+            - success
+            - failed
+            - cancelled
+        commit_hash:
+          type: string
+        commit_message:
+          type: string
+        is_rollback:
+          type: boolean
+        started_at:
+          type: string
+          format: date-time
+        finished_at:
+          type: string
+          format: date-time
+    DeploymentList:
+      type: object
+      properties:
+        deployments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Deployment'
+        total_count:
+          type: integer
+    CreateDeploymentRequest:
+      type: object
+      properties:
+        branch:
+          type: string
+        commit_hash:
+          type: string
+        clear_cache:
+          type: boolean
+          default: false
+    EnvironmentVariable:
+      type: object
+      required:
+        - key
+        - value
+      properties:
+        id:
+          type: string
+        key:
+          type: string
+        value:
+          type: string
+        is_available_during_runtime:
+          type: boolean
+          default: true
+        is_available_during_build:
+          type: boolean
+          default: true
+    Database:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        display_name:
+          type: string
+        type:
+          type: string
+          enum:
+            - postgresql
+            - mysql
+            - mariadb
+            - mongodb
+            - redis
+            - valkey
+        version:
+          type: string
+        status:
+          type: string
+          enum:
+            - active
+            - suspended
+            - provisioning
+            - failed
+        resource_type:
+          type: string
+          description: Database pod resource tier.
+        cluster:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+    DatabaseList:
+      type: object
+      properties:
+        databases:
+          type: array
+          items:
+            $ref: '#/components/schemas/Database'
+        total_count:
+          type: integer
+    CreateDatabaseRequest:
+      type: object
+      required:
+        - name
+        - type
+        - resource_type
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+            - postgresql
+            - mysql
+            - mariadb
+            - mongodb
+            - redis
+            - valkey
+        version:
+          type: string
+        resource_type:
+          type: string
+        cluster:
+          type: string
+    Backup:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+            - scheduled
+            - manual
+        status:
+          type: string
+        size_bytes:
+          type: integer
+          format: int64
+        created_at:
+          type: string
+          format: date-time
+    StaticSite:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        display_name:
+          type: string
+        repo_url:
+          type: string
+        branch:
+          type: string
+        build_command:
+          type: string
+        published_directory:
+          type: string
+        default_url:
+          type: string
+        status:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+    StaticSiteList:
+      type: object
+      properties:
+        static_sites:
+          type: array
+          items:
+            $ref: '#/components/schemas/StaticSite'
+        total_count:
+          type: integer
+    CreateStaticSiteRequest:
+      type: object
+      required:
+        - name
+        - repo_url
+      properties:
+        name:
+          type: string
+        repo_url:
+          type: string
+        branch:
+          type: string
+          default: main
+        build_command:
+          type: string
+        published_directory:
+          type: string
+          default: /
+        auto_deploy:
+          type: boolean
+          default: true
+    ObjectStorage:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        endpoint:
+          type: string
+          description: S3-compatible endpoint for the bucket.
+        region:
+          type: string
+        cdn_enabled:
+          type: boolean
+        public:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+    ObjectStorageList:
+      type: object
+      properties:
+        object_storages:
+          type: array
+          items:
+            $ref: '#/components/schemas/ObjectStorage'
+        total_count:
+          type: integer
+    CreateObjectStorageRequest:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+        region:
+          type: string
+        public:
+          type: boolean
+          default: false
+    StorageObject:
+      type: object
+      properties:
+        key:
+          type: string
+        size_bytes:
+          type: integer
+          format: int64
+        last_modified:
+          type: string
+          format: date-time
+        etag:
+          type: string
+    Pipeline:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        stages:
+          type: array
+          items:
+            $ref: '#/components/schemas/PipelineStage'
+        preview_enabled:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+    PipelineStage:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        order:
+          type: integer
+    CreatePipelineRequest:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+        project_id:
+          type: string
+    Usage:
+      type: object
+      properties:
+        period_start:
+          type: string
+          format: date-time
+        period_end:
+          type: string
+          format: date-time
+        currency:
+          type: string
+          default: USD
+        total_cost:
+          type: number
+          format: float
+        line_items:
+          type: array
+          items:
+            type: object
+            properties:
+              category:
+                type: string
+                enum:
+                  - application_hosting
+                  - database_hosting
+                  - static_site_hosting
+                  - object_storage
+                  - build_minutes
+                  - bandwidth
+              quantity:
+                type: number
+              unit:
+                type: string
+              cost:
+                type: number
+                format: float
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        full_name:
+          type: string
+        role:
+          type: string
+    ApiKey:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        role:
+          type: string
+        last_used_at:
+          type: string
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+        token:
+          type: string
+          description: The token value, returned only on creation.

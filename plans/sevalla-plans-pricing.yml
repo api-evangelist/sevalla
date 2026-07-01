@@ -1,0 +1,236 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Sevalla
+providerId: sevalla
+created: '2026-07-01'
+modified: '2026-07-01'
+reconciled: true
+tags:
+- Hosting
+- PaaS
+- Cloud
+- Deployment
+- Databases
+- Static Sites
+- Object Storage
+- Plans
+description: >-
+  Sevalla uses a transparent pay-as-you-go, usage-based pricing model with no
+  per-seat charges and no Kubernetes overhead fees. Application and database
+  hosting are billed per running pod size (compute), plus build minutes and
+  bandwidth. Object storage is billed per GB stored with no ingress/egress
+  fees (powered by Cloudflare R2). Static-site hosting has a genuinely free
+  tier. A hibernation feature lets pods pause when idle to reduce cost. The
+  Sevalla API itself is included with an account at no separate charge.
+notes: >-
+  Representative pod and unit rates as published on the Sevalla pricing and
+  billing pages; verify the current pod catalog and rates on the pricing
+  calculator during reconciliation. Prices in USD.
+sources:
+- https://sevalla.com/pricing/
+- https://docs.sevalla.com/billing/application-hosting-pricing/
+- https://docs.sevalla.com/billing/database-hosting-pricing/
+- https://sevalla.com/object-storage/
+plans:
+- id: sevalla-static-free
+  name: Static Site Hosting (Free)
+  type: free
+  description: >-
+    Completely free static-site hosting on a global edge network with generous
+    monthly allowances under a fair-use policy.
+  entries:
+  - label: Sites per account
+    name: static_sites
+    type: quota
+    metric: sites
+    limit: 100
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: free
+    userMultiplied: false
+  - label: Bandwidth
+    name: static_bandwidth
+    type: quota
+    metric: gigabytes
+    limit: 100
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: free (100 GB / month included)
+    userMultiplied: false
+  - label: Build minutes
+    name: static_build_minutes
+    type: quota
+    metric: minutes
+    limit: 600
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: free (600 minutes / month included)
+    userMultiplied: false
+  elements:
+  - name: Static Sites
+  - name: Global Edge (260+ locations)
+  - name: Custom Domains
+- id: sevalla-application-hosting
+  name: Application Hosting
+  type: usage
+  description: >-
+    Usage-based application hosting billed by running pod size, build time, and
+    outbound bandwidth. A Hobby pod is the entry tier (no custom domain on the
+    web process). Pay for what you run.
+  entries:
+  - label: Hobby Pod (entry, shared)
+    name: pod_hobby
+    type: usage
+    metric: pod_hours
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: from ~$5 / month
+    userMultiplied: false
+  - label: C1 Pod (1 vCPU / 1 GB, CPU-optimized)
+    name: pod_c1
+    type: usage
+    metric: pod_hours
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: ~$18.00 / month
+    userMultiplied: false
+  - label: S2 Pod (1 vCPU / 2 GB, standard)
+    name: pod_s2
+    type: usage
+    metric: pod_hours
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: ~$40.00 / month
+    userMultiplied: false
+  - label: C3 Pod (4 vCPU / 4 GB, CPU-optimized)
+    name: pod_c3
+    type: usage
+    metric: pod_hours
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: ~$135.00 / month
+    userMultiplied: false
+  - label: S4 Pod (4 vCPU / 8 GB, standard)
+    name: pod_s4
+    type: usage
+    metric: pod_hours
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: ~$160.00 / month
+    userMultiplied: false
+  - label: S5 Pod (8 vCPU / 16 GB, standard)
+    name: pod_s5
+    type: usage
+    metric: pod_hours
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: ~$320.00 / month
+    userMultiplied: false
+  - label: Build Time
+    name: build_time
+    type: usage
+    metric: seconds
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 60
+    price: $0.02 / minute ($0.0003333 / second)
+    userMultiplied: false
+  - label: Outbound Bandwidth
+    name: bandwidth
+    type: usage
+    metric: gigabytes
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $0.10 / GB
+    userMultiplied: false
+  elements:
+  - name: Git and Docker Deploys
+  - name: Auto-Scaling
+  - name: 25+ Data Center Locations
+  - name: Hibernation
+- id: sevalla-database-hosting
+  name: Database Hosting
+  type: usage
+  description: >-
+    Usage-based managed databases (PostgreSQL, MySQL, MariaDB, MongoDB, Redis,
+    Valkey) billed by running pod size with disk add-ons. Hibernation pauses
+    idle pods to cut cost.
+  entries:
+  - label: Managed Database Pod (entry)
+    name: db_pod_entry
+    type: usage
+    metric: pod_hours
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: from ~$5 / month
+    userMultiplied: false
+  - label: Disk Space Add-on
+    name: db_disk
+    type: usage
+    metric: gigabytes
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 10
+    price: $10 per 10 GB / month (prorated first month)
+    userMultiplied: false
+  elements:
+  - name: Automatic Backups
+  - name: Private Network Connections
+  - name: 25+ Data Center Locations
+  - name: Hibernation
+- id: sevalla-object-storage
+  name: Object Storage
+  type: usage
+  description: >-
+    S3-compatible object storage powered by Cloudflare R2, billed per GB stored
+    with no ingress or egress fees.
+  entries:
+  - label: Storage
+    name: storage_gb
+    type: usage
+    metric: gigabytes
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $0.02 / GB / month
+    userMultiplied: false
+  - label: Ingress / Egress
+    name: transfer
+    type: usage
+    metric: gigabytes
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: no ingress or egress fees
+    userMultiplied: false
+  elements:
+  - name: S3-Compatible API
+  - name: CDN
+  - name: CORS Policies
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

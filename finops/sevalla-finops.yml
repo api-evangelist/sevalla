@@ -1,0 +1,119 @@
+specification: FinOps Framework
+specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
+provider: Sevalla
+providerId: sevalla
+created: '2026-07-01'
+modified: '2026-07-01'
+reconciled: true
+tags:
+- Hosting
+- PaaS
+- Cloud
+- Deployment
+- Databases
+- Object Storage
+- FinOps
+- Cost Management
+- FOCUS
+description: >-
+  FinOps view of Sevalla spend. Sevalla bills usage-based, pay-as-you-go rates:
+  application and database hosting are metered by running pod size (compute
+  hours), plus build minutes and outbound bandwidth; object storage is billed
+  per GB stored with no ingress/egress fees; static-site hosting has a free
+  tier with metered bandwidth and build minutes. A hibernation feature pauses
+  idle pods to reduce cost. Usage is exposed programmatically via the
+  /company/usage endpoint for cost visibility and allocation.
+notes: >-
+  Pod and unit rates are subject to change; verify against the Sevalla pricing
+  and billing pages and the /company/usage API during reconciliation.
+sources:
+- https://sevalla.com/pricing/
+- https://docs.sevalla.com/billing/application-hosting-pricing/
+- https://docs.sevalla.com/billing/database-hosting-pricing/
+- https://api-docs.sevalla.com/
+- https://focus.finops.org/focus-specification/v1-3/
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+publisherName: Sevalla
+serviceCategory: Compute
+billingModel:
+  pricingCategory: Usage-Based
+  billingFrequency: Monthly
+  billingCurrency: USD
+  chargeCategories:
+  - Usage
+  - Purchase
+  - Adjustment
+focusColumns:
+  ServiceName: Sevalla
+  ServiceCategory: Compute
+  ProviderName: Sevalla
+  PublisherName: Sevalla
+  InvoiceIssuerName: Kinsta
+  BillingCurrency: USD
+  ChargeCategory: Usage
+  PricingCategory: Usage-Based
+meters:
+- name: application_pod_hours
+  description: Compute hours consumed by running application pods, billed per pod size.
+  unit: pod_hours
+  aggregation: sum
+  dimensions:
+  - company
+  - application
+  - pod_size
+  - cluster
+- name: database_pod_hours
+  description: Compute hours consumed by running managed-database pods, billed per resource tier.
+  unit: pod_hours
+  aggregation: sum
+  dimensions:
+  - company
+  - database
+  - resource_type
+  - cluster
+- name: database_disk_gb
+  description: Provisioned database disk space, billed per 10 GB add-on per month.
+  unit: gigabytes
+  aggregation: max
+  dimensions:
+  - company
+  - database
+- name: build_minutes
+  description: Build/compile time for application and static-site deployments, billed per minute.
+  unit: minutes
+  aggregation: sum
+  dimensions:
+  - company
+  - application
+- name: bandwidth_gb
+  description: Outbound bandwidth from applications, billed per GB (static-site tier includes a free allowance).
+  unit: gigabytes
+  aggregation: sum
+  dimensions:
+  - company
+  - resource
+- name: object_storage_gb
+  description: Object storage stored per GB per month; no ingress/egress fees.
+  unit: gigabytes
+  aggregation: max
+  dimensions:
+  - company
+  - bucket
+principles:
+- name: Visibility
+  description: Pull usage via the /company/usage API and the pricing calculator; inspect spend by pod size, database, and bucket.
+- name: Allocation
+  description: Organize resources into projects and scope API keys per team; map projects to internal cost centers.
+- name: Optimization
+  description: Enable hibernation to pause idle pods; right-size pod tiers; use the free static-site tier; keep object storage on R2 to avoid egress fees.
+- name: Accountability
+  description: Assign owners per project and API key; set usage alerts and review monthly spend against budget.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
