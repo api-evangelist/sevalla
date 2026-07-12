@@ -186,6 +186,10 @@ apis:
     and rotate API keys with scoped roles and permissions, set global environment variables,
     and drive device-authorization flows.
 common:
+- type: DomainSecurity
+  url: security/sevalla-domain-security.yml
+- type: Authentication
+  url: authentication/sevalla-authentication.yml
 - type: GitHubOrganization
   url: https://github.com/sevalla-hosting
 - type: LinkedIn
@@ -200,6 +204,8 @@ common:
   url: rate-limits/sevalla-rate-limits.yml
 - type: FinOps
   url: finops/sevalla-finops.yml
+- url: https://sevalla.com/blog/
+  type: Blog
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com

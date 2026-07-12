@@ -1,0 +1,15 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/sevalla-openapi.yml
+summary:
+  types:
+  - http
+schemes:
+- name: bearerAuth
+  type: http
+  scheme: bearer
+  bearerFormat: apiToken
+  description: Provide your Sevalla API token as a bearer token in the Authorization header.
+    Create a token from the Sevalla dashboard; one token authenticates every endpoint.
+  sources:
+  - openapi/sevalla-openapi.yml
