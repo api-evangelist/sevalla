@@ -186,6 +186,8 @@ apis:
     and rotate API keys with scoped roles and permissions, set global environment variables,
     and drive device-authorization flows.
 common:
+- type: AgenticAccess
+  url: agentic-access/sevalla-agentic-access.yml
 - type: DomainSecurity
   url: security/sevalla-domain-security.yml
 - type: Authentication
