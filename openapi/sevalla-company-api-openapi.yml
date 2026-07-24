@@ -1,0 +1,177 @@
+openapi: 3.0.3
+info:
+  title: Sevalla Applications Company API
+  description: The Sevalla API lets you deploy, scale, and manage your entire cloud infrastructure programmatically - applications, deployments, managed databases, static sites, S3-compatible object storage, pipelines, and operational metrics. Sevalla is a Kinsta product built on Google Cloud Platform and Cloudflare. A single API token authenticates every endpoint.
+  termsOfService: https://sevalla.com/legal/terms-of-service/
+  contact:
+    name: Sevalla Support
+    url: https://sevalla.com/contact/
+  version: v3
+servers:
+- url: https://api.sevalla.com/v3
+  description: Production
+security:
+- bearerAuth: []
+tags:
+- name: Company
+  description: Company users, projects, usage, and API keys.
+paths:
+  /company/usage:
+    get:
+      operationId: getCompanyUsage
+      tags:
+      - Company
+      summary: Get company usage data
+      parameters:
+      - $ref: '#/components/parameters/CompanyId'
+      responses:
+        '200':
+          description: Usage data for the company.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usage'
+  /company/users:
+    get:
+      operationId: listCompanyUsers
+      tags:
+      - Company
+      summary: List company users
+      parameters:
+      - $ref: '#/components/parameters/CompanyId'
+      responses:
+        '200':
+          description: A list of users.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  users:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+  /api-keys:
+    get:
+      operationId: listApiKeys
+      tags:
+      - Company
+      summary: List API keys
+      responses:
+        '200':
+          description: A list of API keys.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  api_keys:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ApiKey'
+    post:
+      operationId: createApiKey
+      tags:
+      - Company
+      summary: Create an API key
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - name
+              properties:
+                name:
+                  type: string
+                role:
+                  type: string
+      responses:
+        '201':
+          description: The created API key.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKey'
+components:
+  schemas:
+    ApiKey:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        role:
+          type: string
+        last_used_at:
+          type: string
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+        token:
+          type: string
+          description: The token value, returned only on creation.
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        full_name:
+          type: string
+        role:
+          type: string
+    Usage:
+      type: object
+      properties:
+        period_start:
+          type: string
+          format: date-time
+        period_end:
+          type: string
+          format: date-time
+        currency:
+          type: string
+          default: USD
+        total_cost:
+          type: number
+          format: float
+        line_items:
+          type: array
+          items:
+            type: object
+            properties:
+              category:
+                type: string
+                enum:
+                - application_hosting
+                - database_hosting
+                - static_site_hosting
+                - object_storage
+                - build_minutes
+                - bandwidth
+              quantity:
+                type: number
+              unit:
+                type: string
+              cost:
+                type: number
+                format: float
+  parameters:
+    CompanyId:
+      name: company
+      in: query
+      required: false
+      description: The company (organization) identifier to scope the request.
+      schema:
+        type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: apiToken
+      description: Provide your Sevalla API token as a bearer token in the Authorization header. Create a token from the Sevalla dashboard; one token authenticates every endpoint.

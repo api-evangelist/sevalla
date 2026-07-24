@@ -1,0 +1,155 @@
+openapi: 3.0.3
+info:
+  title: Sevalla Applications Pipelines API
+  description: The Sevalla API lets you deploy, scale, and manage your entire cloud infrastructure programmatically - applications, deployments, managed databases, static sites, S3-compatible object storage, pipelines, and operational metrics. Sevalla is a Kinsta product built on Google Cloud Platform and Cloudflare. A single API token authenticates every endpoint.
+  termsOfService: https://sevalla.com/legal/terms-of-service/
+  contact:
+    name: Sevalla Support
+    url: https://sevalla.com/contact/
+  version: v3
+servers:
+- url: https://api.sevalla.com/v3
+  description: Production
+security:
+- bearerAuth: []
+tags:
+- name: Pipelines
+  description: Multi-stage promotion pipelines and preview environments.
+paths:
+  /pipelines:
+    get:
+      operationId: listPipelines
+      tags:
+      - Pipelines
+      summary: List pipelines
+      parameters:
+      - $ref: '#/components/parameters/CompanyId'
+      responses:
+        '200':
+          description: A list of pipelines.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  pipelines:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Pipeline'
+    post:
+      operationId: createPipeline
+      tags:
+      - Pipelines
+      summary: Create a pipeline
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePipelineRequest'
+      responses:
+        '201':
+          description: The created pipeline.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pipeline'
+  /pipelines/{id}/promote:
+    parameters:
+    - $ref: '#/components/parameters/ResourceId'
+    post:
+      operationId: promotePipeline
+      tags:
+      - Pipelines
+      summary: Promote an application between pipeline stages
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                source_stage_id:
+                  type: string
+                target_stage_id:
+                  type: string
+                application_id:
+                  type: string
+      responses:
+        '200':
+          description: The promotion result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationStatus'
+components:
+  schemas:
+    PipelineStage:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        order:
+          type: integer
+    OperationStatus:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+          enum:
+          - pending
+          - running
+          - success
+          - failed
+        message:
+          type: string
+    CreatePipelineRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+        project_id:
+          type: string
+    Pipeline:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        stages:
+          type: array
+          items:
+            $ref: '#/components/schemas/PipelineStage'
+        preview_enabled:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+  parameters:
+    CompanyId:
+      name: company
+      in: query
+      required: false
+      description: The company (organization) identifier to scope the request.
+      schema:
+        type: string
+    ResourceId:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the resource.
+      schema:
+        type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: apiToken
+      description: Provide your Sevalla API token as a bearer token in the Authorization header. Create a token from the Sevalla dashboard; one token authenticates every endpoint.

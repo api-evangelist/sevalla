@@ -1,0 +1,151 @@
+openapi: 3.0.3
+info:
+  title: Sevalla Applications Deployments API
+  description: The Sevalla API lets you deploy, scale, and manage your entire cloud infrastructure programmatically - applications, deployments, managed databases, static sites, S3-compatible object storage, pipelines, and operational metrics. Sevalla is a Kinsta product built on Google Cloud Platform and Cloudflare. A single API token authenticates every endpoint.
+  termsOfService: https://sevalla.com/legal/terms-of-service/
+  contact:
+    name: Sevalla Support
+    url: https://sevalla.com/contact/
+  version: v3
+servers:
+- url: https://api.sevalla.com/v3
+  description: Production
+security:
+- bearerAuth: []
+tags:
+- name: Deployments
+  description: Trigger, inspect, and roll back deployments.
+paths:
+  /applications/{id}/deployments:
+    parameters:
+    - $ref: '#/components/parameters/ResourceId'
+    get:
+      operationId: listDeployments
+      tags:
+      - Deployments
+      summary: List deployments for an application
+      responses:
+        '200':
+          description: A list of deployments.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeploymentList'
+    post:
+      operationId: createDeployment
+      tags:
+      - Deployments
+      summary: Trigger a new deployment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateDeploymentRequest'
+      responses:
+        '201':
+          description: The triggered deployment.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Deployment'
+  /applications/{id}/deployments/{deploymentId}:
+    parameters:
+    - $ref: '#/components/parameters/ResourceId'
+    - $ref: '#/components/parameters/DeploymentId'
+    get:
+      operationId: getDeployment
+      tags:
+      - Deployments
+      summary: Get deployment details
+      responses:
+        '200':
+          description: The deployment.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Deployment'
+  /applications/{id}/deployments/{deploymentId}/rollback:
+    parameters:
+    - $ref: '#/components/parameters/ResourceId'
+    - $ref: '#/components/parameters/DeploymentId'
+    post:
+      operationId: rollbackDeployment
+      tags:
+      - Deployments
+      summary: Roll back to a previous deployment
+      responses:
+        '200':
+          description: The rollback deployment.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Deployment'
+components:
+  schemas:
+    DeploymentList:
+      type: object
+      properties:
+        deployments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Deployment'
+        total_count:
+          type: integer
+    Deployment:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+          enum:
+          - queued
+          - building
+          - deploying
+          - success
+          - failed
+          - cancelled
+        commit_hash:
+          type: string
+        commit_message:
+          type: string
+        is_rollback:
+          type: boolean
+        started_at:
+          type: string
+          format: date-time
+        finished_at:
+          type: string
+          format: date-time
+    CreateDeploymentRequest:
+      type: object
+      properties:
+        branch:
+          type: string
+        commit_hash:
+          type: string
+        clear_cache:
+          type: boolean
+          default: false
+  parameters:
+    ResourceId:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the resource.
+      schema:
+        type: string
+    DeploymentId:
+      name: deploymentId
+      in: path
+      required: true
+      description: The unique identifier of the deployment.
+      schema:
+        type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: apiToken
+      description: Provide your Sevalla API token as a bearer token in the Authorization header. Create a token from the Sevalla dashboard; one token authenticates every endpoint.

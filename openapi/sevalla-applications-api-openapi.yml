@@ -1,0 +1,348 @@
+openapi: 3.0.3
+info:
+  title: Sevalla Applications API
+  description: The Sevalla API lets you deploy, scale, and manage your entire cloud infrastructure programmatically - applications, deployments, managed databases, static sites, S3-compatible object storage, pipelines, and operational metrics. Sevalla is a Kinsta product built on Google Cloud Platform and Cloudflare. A single API token authenticates every endpoint.
+  termsOfService: https://sevalla.com/legal/terms-of-service/
+  contact:
+    name: Sevalla Support
+    url: https://sevalla.com/contact/
+  version: v3
+servers:
+- url: https://api.sevalla.com/v3
+  description: Production
+security:
+- bearerAuth: []
+tags:
+- name: Applications
+  description: Deploy and manage applications from Git or Docker.
+paths:
+  /applications:
+    get:
+      operationId: listApplications
+      tags:
+      - Applications
+      summary: List all applications
+      parameters:
+      - $ref: '#/components/parameters/CompanyId'
+      - $ref: '#/components/parameters/Limit'
+      - $ref: '#/components/parameters/Offset'
+      responses:
+        '200':
+          description: A paginated list of applications.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationList'
+    post:
+      operationId: createApplication
+      tags:
+      - Applications
+      summary: Create a new application
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateApplicationRequest'
+      responses:
+        '201':
+          description: The created application.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Application'
+  /applications/{id}:
+    parameters:
+    - $ref: '#/components/parameters/ResourceId'
+    get:
+      operationId: getApplication
+      tags:
+      - Applications
+      summary: Retrieve application details
+      responses:
+        '200':
+          description: The application.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Application'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      operationId: updateApplication
+      tags:
+      - Applications
+      summary: Update an application
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateApplicationRequest'
+      responses:
+        '200':
+          description: The updated application.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Application'
+    delete:
+      operationId: deleteApplication
+      tags:
+      - Applications
+      summary: Delete an application
+      responses:
+        '204':
+          description: The application was deleted.
+  /applications/{id}/suspend:
+    parameters:
+    - $ref: '#/components/parameters/ResourceId'
+    post:
+      operationId: suspendApplication
+      tags:
+      - Applications
+      summary: Suspend a running application
+      responses:
+        '200':
+          description: The application is being suspended.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationStatus'
+  /applications/{id}/activate:
+    parameters:
+    - $ref: '#/components/parameters/ResourceId'
+    post:
+      operationId: activateApplication
+      tags:
+      - Applications
+      summary: Activate a suspended application
+      responses:
+        '200':
+          description: The application is being activated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationStatus'
+  /applications/{id}/environment-variables:
+    parameters:
+    - $ref: '#/components/parameters/ResourceId'
+    get:
+      operationId: listEnvironmentVariables
+      tags:
+      - Applications
+      summary: List environment variables
+      responses:
+        '200':
+          description: A list of environment variables.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  environment_variables:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/EnvironmentVariable'
+    post:
+      operationId: createEnvironmentVariable
+      tags:
+      - Applications
+      summary: Create an environment variable
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnvironmentVariable'
+      responses:
+        '201':
+          description: The created environment variable.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnvironmentVariable'
+components:
+  schemas:
+    UpdateApplicationRequest:
+      type: object
+      properties:
+        display_name:
+          type: string
+        branch:
+          type: string
+        auto_deploy:
+          type: boolean
+        pod_size:
+          type: string
+    EnvironmentVariable:
+      type: object
+      required:
+      - key
+      - value
+      properties:
+        id:
+          type: string
+        key:
+          type: string
+        value:
+          type: string
+        is_available_during_runtime:
+          type: boolean
+          default: true
+        is_available_during_build:
+          type: boolean
+          default: true
+    Application:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        display_name:
+          type: string
+        status:
+          type: string
+          enum:
+          - active
+          - suspended
+          - deploying
+          - failed
+        repo_url:
+          type: string
+        branch:
+          type: string
+        auto_deploy:
+          type: boolean
+        default_url:
+          type: string
+        cluster:
+          type: string
+          description: Google Cloud region / cluster the app runs in.
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    Error:
+      type: object
+      properties:
+        status:
+          type: integer
+          description: HTTP status code.
+        message:
+          type: string
+          description: Human-readable error message.
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              key:
+                type: string
+              message:
+                type: string
+      required:
+      - status
+      - message
+    OperationStatus:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+          enum:
+          - pending
+          - running
+          - success
+          - failed
+        message:
+          type: string
+    ApplicationList:
+      type: object
+      properties:
+        applications:
+          type: array
+          items:
+            $ref: '#/components/schemas/Application'
+        total_count:
+          type: integer
+    CreateApplicationRequest:
+      type: object
+      required:
+      - name
+      - repo_url
+      properties:
+        name:
+          type: string
+        repo_url:
+          type: string
+        branch:
+          type: string
+          default: main
+        auto_deploy:
+          type: boolean
+          default: true
+        build_type:
+          type: string
+          enum:
+          - buildpacks
+          - dockerfile
+          - nixpacks
+        pod_size:
+          type: string
+          description: Pod size code, e.g. hobby, s1, s2, c1.
+        cluster:
+          type: string
+        env:
+          type: object
+          additionalProperties:
+            type: string
+  parameters:
+    Limit:
+      name: limit
+      in: query
+      required: false
+      description: Maximum number of items to return.
+      schema:
+        type: integer
+        default: 20
+        maximum: 100
+    CompanyId:
+      name: company
+      in: query
+      required: false
+      description: The company (organization) identifier to scope the request.
+      schema:
+        type: string
+    ResourceId:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the resource.
+      schema:
+        type: string
+    Offset:
+      name: offset
+      in: query
+      required: false
+      description: Number of items to skip for pagination.
+      schema:
+        type: integer
+        default: 0
+  responses:
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: apiToken
+      description: Provide your Sevalla API token as a bearer token in the Authorization header. Create a token from the Sevalla dashboard; one token authenticates every endpoint.

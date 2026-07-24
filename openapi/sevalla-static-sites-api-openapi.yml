@@ -1,0 +1,192 @@
+openapi: 3.0.3
+info:
+  title: Sevalla Applications Static Sites API
+  description: The Sevalla API lets you deploy, scale, and manage your entire cloud infrastructure programmatically - applications, deployments, managed databases, static sites, S3-compatible object storage, pipelines, and operational metrics. Sevalla is a Kinsta product built on Google Cloud Platform and Cloudflare. A single API token authenticates every endpoint.
+  termsOfService: https://sevalla.com/legal/terms-of-service/
+  contact:
+    name: Sevalla Support
+    url: https://sevalla.com/contact/
+  version: v3
+servers:
+- url: https://api.sevalla.com/v3
+  description: Production
+security:
+- bearerAuth: []
+tags:
+- name: Static Sites
+  description: Build and deploy Git-backed static sites to the edge.
+paths:
+  /static-sites:
+    get:
+      operationId: listStaticSites
+      tags:
+      - Static Sites
+      summary: List static sites
+      parameters:
+      - $ref: '#/components/parameters/CompanyId'
+      responses:
+        '200':
+          description: A list of static sites.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StaticSiteList'
+    post:
+      operationId: createStaticSite
+      tags:
+      - Static Sites
+      summary: Create a static site
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateStaticSiteRequest'
+      responses:
+        '201':
+          description: The created static site.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StaticSite'
+  /static-sites/{id}:
+    parameters:
+    - $ref: '#/components/parameters/ResourceId'
+    get:
+      operationId: getStaticSite
+      tags:
+      - Static Sites
+      summary: Get a static site
+      responses:
+        '200':
+          description: The static site.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StaticSite'
+    delete:
+      operationId: deleteStaticSite
+      tags:
+      - Static Sites
+      summary: Delete a static site
+      responses:
+        '204':
+          description: The static site was deleted.
+  /static-sites/{id}/deployments:
+    parameters:
+    - $ref: '#/components/parameters/ResourceId'
+    post:
+      operationId: deployStaticSite
+      tags:
+      - Static Sites
+      summary: Deploy a static site
+      responses:
+        '201':
+          description: The triggered deployment.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Deployment'
+components:
+  schemas:
+    CreateStaticSiteRequest:
+      type: object
+      required:
+      - name
+      - repo_url
+      properties:
+        name:
+          type: string
+        repo_url:
+          type: string
+        branch:
+          type: string
+          default: main
+        build_command:
+          type: string
+        published_directory:
+          type: string
+          default: /
+        auto_deploy:
+          type: boolean
+          default: true
+    StaticSiteList:
+      type: object
+      properties:
+        static_sites:
+          type: array
+          items:
+            $ref: '#/components/schemas/StaticSite'
+        total_count:
+          type: integer
+    Deployment:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+          enum:
+          - queued
+          - building
+          - deploying
+          - success
+          - failed
+          - cancelled
+        commit_hash:
+          type: string
+        commit_message:
+          type: string
+        is_rollback:
+          type: boolean
+        started_at:
+          type: string
+          format: date-time
+        finished_at:
+          type: string
+          format: date-time
+    StaticSite:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        display_name:
+          type: string
+        repo_url:
+          type: string
+        branch:
+          type: string
+        build_command:
+          type: string
+        published_directory:
+          type: string
+        default_url:
+          type: string
+        status:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+  parameters:
+    CompanyId:
+      name: company
+      in: query
+      required: false
+      description: The company (organization) identifier to scope the request.
+      schema:
+        type: string
+    ResourceId:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the resource.
+      schema:
+        type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: apiToken
+      description: Provide your Sevalla API token as a bearer token in the Authorization header. Create a token from the Sevalla dashboard; one token authenticates every endpoint.

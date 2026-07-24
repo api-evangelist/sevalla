@@ -1,0 +1,170 @@
+openapi: 3.0.3
+info:
+  title: Sevalla Applications Object Storage API
+  description: The Sevalla API lets you deploy, scale, and manage your entire cloud infrastructure programmatically - applications, deployments, managed databases, static sites, S3-compatible object storage, pipelines, and operational metrics. Sevalla is a Kinsta product built on Google Cloud Platform and Cloudflare. A single API token authenticates every endpoint.
+  termsOfService: https://sevalla.com/legal/terms-of-service/
+  contact:
+    name: Sevalla Support
+    url: https://sevalla.com/contact/
+  version: v3
+servers:
+- url: https://api.sevalla.com/v3
+  description: Production
+security:
+- bearerAuth: []
+tags:
+- name: Object Storage
+  description: S3-compatible object storage buckets.
+paths:
+  /object-storages:
+    get:
+      operationId: listObjectStorages
+      tags:
+      - Object Storage
+      summary: List object storage buckets
+      parameters:
+      - $ref: '#/components/parameters/CompanyId'
+      responses:
+        '200':
+          description: A list of buckets.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectStorageList'
+    post:
+      operationId: createObjectStorage
+      tags:
+      - Object Storage
+      summary: Create an object storage bucket
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateObjectStorageRequest'
+      responses:
+        '201':
+          description: The created bucket.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectStorage'
+  /object-storages/{id}:
+    parameters:
+    - $ref: '#/components/parameters/ResourceId'
+    get:
+      operationId: getObjectStorage
+      tags:
+      - Object Storage
+      summary: Get an object storage bucket
+      responses:
+        '200':
+          description: The bucket.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectStorage'
+    delete:
+      operationId: deleteObjectStorage
+      tags:
+      - Object Storage
+      summary: Delete an object storage bucket
+      responses:
+        '204':
+          description: The bucket was deleted.
+  /object-storages/{id}/objects:
+    parameters:
+    - $ref: '#/components/parameters/ResourceId'
+    get:
+      operationId: listObjects
+      tags:
+      - Object Storage
+      summary: List objects in a bucket
+      responses:
+        '200':
+          description: A list of objects.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  objects:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/StorageObject'
+components:
+  parameters:
+    CompanyId:
+      name: company
+      in: query
+      required: false
+      description: The company (organization) identifier to scope the request.
+      schema:
+        type: string
+    ResourceId:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the resource.
+      schema:
+        type: string
+  schemas:
+    CreateObjectStorageRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+        region:
+          type: string
+        public:
+          type: boolean
+          default: false
+    ObjectStorage:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        endpoint:
+          type: string
+          description: S3-compatible endpoint for the bucket.
+        region:
+          type: string
+        cdn_enabled:
+          type: boolean
+        public:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+    StorageObject:
+      type: object
+      properties:
+        key:
+          type: string
+        size_bytes:
+          type: integer
+          format: int64
+        last_modified:
+          type: string
+          format: date-time
+        etag:
+          type: string
+    ObjectStorageList:
+      type: object
+      properties:
+        object_storages:
+          type: array
+          items:
+            $ref: '#/components/schemas/ObjectStorage'
+        total_count:
+          type: integer
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: apiToken
+      description: Provide your Sevalla API token as a bearer token in the Authorization header. Create a token from the Sevalla dashboard; one token authenticates every endpoint.
