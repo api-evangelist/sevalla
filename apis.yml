@@ -8,7 +8,20 @@ description: Sevalla is an application, database, and static-site hosting platfo
   Redis, Valkey), host static sites on a global edge, and run S3-compatible object
   storage. The public REST API (base https://api.sevalla.com/v3, Bearer API token)
   exposes 200+ endpoints to manage the entire platform programmatically.
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: freemium
+  onboarding: self-serve
+  trial: false
+  try_now: true
+  public: false
+  label: Freemium · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/sevalla.png
 tags:
 - Hosting
 - PaaS
@@ -23,168 +36,186 @@ specificationVersion: '0.19'
 apis:
 - aid: sevalla:sevalla-applications-api
   name: Sevalla Applications API
+  description: Deploy and manage applications from Git or Docker.
+  humanURL: https://api-docs.sevalla.com/
+  baseURL: https://api.sevalla.com/v3
   tags:
   - Applications
-  - Deployment
-  - Processes
-  - Domains
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  properties:
+  - type: OpenAPI
+    url: openapi/sevalla-applications-api-openapi.yml
+  - type: Documentation
+    url: https://docs.sevalla.com/application-hosting
+  - type: APIReference
+    url: https://api-docs.sevalla.com/
+  - type: Documentation
+    url: https://docs.sevalla.com/application-hosting/deployments
+  - type: Documentation
+    url: https://docs.sevalla.com/database-hosting
+  - type: Documentation
+    url: https://docs.sevalla.com/static-site-hosting
+  - type: Documentation
+    url: https://docs.sevalla.com/object-storage
+  - type: Documentation
+    url: https://docs.sevalla.com/pipelines
+  - type: Documentation
+    url: https://docs.sevalla.com/
+- aid: sevalla:sevalla-company-api
+  name: Sevalla Company API
+  description: Company users, projects, usage, and API keys.
   humanURL: https://api-docs.sevalla.com/
   baseURL: https://api.sevalla.com/v3
-  properties:
-  - url: https://docs.sevalla.com/application-hosting
-    type: Documentation
-  - url: https://api-docs.sevalla.com/
-    type: APIReference
-  - url: openapi/sevalla-openapi.yml
-    type: OpenAPI
-  description: Create, list, update, suspend, activate, clone, and delete applications
-    deployed from Git or Docker; manage processes, environment variables, custom and
-    system domains, private ports, TCP proxies, IP restrictions, CDN, and read-only
-    repository access.
-- aid: sevalla:sevalla-deployments-api
-  name: Sevalla Deployments API
-  tags:
-  - Deployments
-  - Builds
-  - Rollback
-  - Logs
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://api-docs.sevalla.com/
-  baseURL: https://api.sevalla.com/v3
-  properties:
-  - url: https://docs.sevalla.com/application-hosting/deployments
-    type: Documentation
-  - url: https://api-docs.sevalla.com/
-    type: APIReference
-  - url: openapi/sevalla-openapi.yml
-    type: OpenAPI
-  description: Trigger, list, retrieve, cancel, and roll back application and static-site
-    deployments, read deployment logs, and manage deploy hooks for automated CI/CD
-    workflows.
-- aid: sevalla:sevalla-databases-api
-  name: Sevalla Databases API
-  tags:
-  - Databases
-  - PostgreSQL
-  - MySQL
-  - Redis
-  - Backups
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://api-docs.sevalla.com/
-  baseURL: https://api.sevalla.com/v3
-  properties:
-  - url: https://docs.sevalla.com/database-hosting
-    type: Documentation
-  - url: https://api-docs.sevalla.com/
-    type: APIReference
-  - url: openapi/sevalla-openapi.yml
-    type: OpenAPI
-  description: Provision and manage PostgreSQL, MySQL, MariaDB, MongoDB, Redis, and
-    Valkey databases, with backups, restores, password resets, internal connections,
-    external-access toggles, IP restrictions, and resource metrics.
-- aid: sevalla:sevalla-static-sites-api
-  name: Sevalla Static Sites API
-  tags:
-  - Static Sites
-  - Edge
-  - JAMstack
-  - CDN
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://api-docs.sevalla.com/
-  baseURL: https://api.sevalla.com/v3
-  properties:
-  - url: https://docs.sevalla.com/static-site-hosting
-    type: Documentation
-  - url: https://api-docs.sevalla.com/
-    type: APIReference
-  - url: openapi/sevalla-openapi.yml
-    type: OpenAPI
-  description: Build and deploy Git-backed static sites to a global edge network, with
-    environment variables, custom domains, pretty URLs, cache purging, access logs,
-    and traffic analytics.
-- aid: sevalla:sevalla-object-storage-api
-  name: Sevalla Object Storage API
-  tags:
-  - Object Storage
-  - S3
-  - Buckets
-  - Cloudflare R2
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://api-docs.sevalla.com/
-  baseURL: https://api.sevalla.com/v3
-  properties:
-  - url: https://docs.sevalla.com/object-storage
-    type: Documentation
-  - url: https://api-docs.sevalla.com/
-    type: APIReference
-  - url: openapi/sevalla-openapi.yml
-    type: OpenAPI
-  description: Create and manage S3-compatible object storage buckets (powered by Cloudflare
-    R2), rotate access credentials, configure CORS policies and CDN, list and delete
-    objects, and purge the CDN cache.
-- aid: sevalla:sevalla-pipelines-api
-  name: Sevalla Pipelines API
-  tags:
-  - Pipelines
-  - Environments
-  - Promotion
-  - Preview
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://api-docs.sevalla.com/
-  baseURL: https://api.sevalla.com/v3
-  properties:
-  - url: https://docs.sevalla.com/pipelines
-    type: Documentation
-  - url: https://api-docs.sevalla.com/
-    type: APIReference
-  - url: openapi/sevalla-openapi.yml
-    type: OpenAPI
-  description: Model multi-stage promotion pipelines that move applications across
-    environments, add and remove applications from stages, promote between stages,
-    and enable pull-request preview environments.
-- aid: sevalla:sevalla-operations-api
-  name: Sevalla Operations API
-  tags:
-  - Operations
-  - Metrics
-  - Logs
-  - Webhooks
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://api-docs.sevalla.com/
-  baseURL: https://api.sevalla.com/v3
-  properties:
-  - url: https://docs.sevalla.com/
-    type: Documentation
-  - url: https://api-docs.sevalla.com/
-    type: APIReference
-  - url: openapi/sevalla-openapi.yml
-    type: OpenAPI
-  description: Operate the platform at runtime - read CPU, memory, storage, request,
-    and status-code metrics, retrieve access and runtime logs, manage webhooks and
-    deliveries, configure usage alerts, and query reference resources such as clusters
-    and process types.
-- aid: sevalla:sevalla-company-account-api
-  name: Sevalla Company and Account API
   tags:
   - Company
-  - Account
-  - API Keys
-  - Projects
-  - Usage
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  properties:
+  - type: OpenAPI
+    url: openapi/sevalla-company-api-openapi.yml
+  - type: Documentation
+    url: https://docs.sevalla.com/application-hosting
+  - type: APIReference
+    url: https://api-docs.sevalla.com/
+  - type: Documentation
+    url: https://docs.sevalla.com/application-hosting/deployments
+  - type: Documentation
+    url: https://docs.sevalla.com/database-hosting
+  - type: Documentation
+    url: https://docs.sevalla.com/static-site-hosting
+  - type: Documentation
+    url: https://docs.sevalla.com/object-storage
+  - type: Documentation
+    url: https://docs.sevalla.com/pipelines
+  - type: Documentation
+    url: https://docs.sevalla.com/
+- aid: sevalla:sevalla-databases-api
+  name: Sevalla Databases API
+  description: Provision and manage managed databases.
   humanURL: https://api-docs.sevalla.com/
   baseURL: https://api.sevalla.com/v3
+  tags:
+  - Databases
   properties:
-  - url: https://docs.sevalla.com/
-    type: Documentation
-  - url: https://api-docs.sevalla.com/
-    type: APIReference
-  - url: openapi/sevalla-openapi.yml
-    type: OpenAPI
-  description: Manage company users and usage, organize resources into projects, create
-    and rotate API keys with scoped roles and permissions, set global environment variables,
-    and drive device-authorization flows.
+  - type: OpenAPI
+    url: openapi/sevalla-databases-api-openapi.yml
+  - type: Documentation
+    url: https://docs.sevalla.com/application-hosting
+  - type: APIReference
+    url: https://api-docs.sevalla.com/
+  - type: Documentation
+    url: https://docs.sevalla.com/application-hosting/deployments
+  - type: Documentation
+    url: https://docs.sevalla.com/database-hosting
+  - type: Documentation
+    url: https://docs.sevalla.com/static-site-hosting
+  - type: Documentation
+    url: https://docs.sevalla.com/object-storage
+  - type: Documentation
+    url: https://docs.sevalla.com/pipelines
+  - type: Documentation
+    url: https://docs.sevalla.com/
+- aid: sevalla:sevalla-deployments-api
+  name: Sevalla Deployments API
+  description: Trigger, inspect, and roll back deployments.
+  humanURL: https://api-docs.sevalla.com/
+  baseURL: https://api.sevalla.com/v3
+  tags:
+  - Deployments
+  properties:
+  - type: OpenAPI
+    url: openapi/sevalla-deployments-api-openapi.yml
+  - type: Documentation
+    url: https://docs.sevalla.com/application-hosting
+  - type: APIReference
+    url: https://api-docs.sevalla.com/
+  - type: Documentation
+    url: https://docs.sevalla.com/application-hosting/deployments
+  - type: Documentation
+    url: https://docs.sevalla.com/database-hosting
+  - type: Documentation
+    url: https://docs.sevalla.com/static-site-hosting
+  - type: Documentation
+    url: https://docs.sevalla.com/object-storage
+  - type: Documentation
+    url: https://docs.sevalla.com/pipelines
+  - type: Documentation
+    url: https://docs.sevalla.com/
+- aid: sevalla:sevalla-object-storage-api
+  name: Sevalla Object Storage API
+  description: S3-compatible object storage buckets.
+  humanURL: https://api-docs.sevalla.com/
+  baseURL: https://api.sevalla.com/v3
+  tags:
+  - Object Storage
+  properties:
+  - type: OpenAPI
+    url: openapi/sevalla-object-storage-api-openapi.yml
+  - type: Documentation
+    url: https://docs.sevalla.com/application-hosting
+  - type: APIReference
+    url: https://api-docs.sevalla.com/
+  - type: Documentation
+    url: https://docs.sevalla.com/application-hosting/deployments
+  - type: Documentation
+    url: https://docs.sevalla.com/database-hosting
+  - type: Documentation
+    url: https://docs.sevalla.com/static-site-hosting
+  - type: Documentation
+    url: https://docs.sevalla.com/object-storage
+  - type: Documentation
+    url: https://docs.sevalla.com/pipelines
+  - type: Documentation
+    url: https://docs.sevalla.com/
+- aid: sevalla:sevalla-pipelines-api
+  name: Sevalla Pipelines API
+  description: Multi-stage promotion pipelines and preview environments.
+  humanURL: https://api-docs.sevalla.com/
+  baseURL: https://api.sevalla.com/v3
+  tags:
+  - Pipelines
+  properties:
+  - type: OpenAPI
+    url: openapi/sevalla-pipelines-api-openapi.yml
+  - type: Documentation
+    url: https://docs.sevalla.com/application-hosting
+  - type: APIReference
+    url: https://api-docs.sevalla.com/
+  - type: Documentation
+    url: https://docs.sevalla.com/application-hosting/deployments
+  - type: Documentation
+    url: https://docs.sevalla.com/database-hosting
+  - type: Documentation
+    url: https://docs.sevalla.com/static-site-hosting
+  - type: Documentation
+    url: https://docs.sevalla.com/object-storage
+  - type: Documentation
+    url: https://docs.sevalla.com/pipelines
+  - type: Documentation
+    url: https://docs.sevalla.com/
+- aid: sevalla:sevalla-static-sites-api
+  name: Sevalla Static Sites API
+  description: Build and deploy Git-backed static sites to the edge.
+  humanURL: https://api-docs.sevalla.com/
+  baseURL: https://api.sevalla.com/v3
+  tags:
+  - Static Sites
+  properties:
+  - type: OpenAPI
+    url: openapi/sevalla-static-sites-api-openapi.yml
+  - type: Documentation
+    url: https://docs.sevalla.com/application-hosting
+  - type: APIReference
+    url: https://api-docs.sevalla.com/
+  - type: Documentation
+    url: https://docs.sevalla.com/application-hosting/deployments
+  - type: Documentation
+    url: https://docs.sevalla.com/database-hosting
+  - type: Documentation
+    url: https://docs.sevalla.com/static-site-hosting
+  - type: Documentation
+    url: https://docs.sevalla.com/object-storage
+  - type: Documentation
+    url: https://docs.sevalla.com/pipelines
+  - type: Documentation
+    url: https://docs.sevalla.com/
 common:
 - type: AgenticAccess
   url: agentic-access/sevalla-agentic-access.yml
