@@ -1,0 +1,26 @@
+{
+  "provider": "sevalla",
+  "sources": [
+    "sevalla-applications-api-openapi.yml",
+    "sevalla-company-api-openapi.yml",
+    "sevalla-databases-api-openapi.yml",
+    "sevalla-deployments-api-openapi.yml",
+    "sevalla-object-storage-api-openapi.yml",
+    "sevalla-pipelines-api-openapi.yml",
+    "sevalla-static-sites-api-openapi.yml"
+  ],
+  "outputs": [
+    "sevalla-applications-api-openapi.yml",
+    "sevalla-company-api-openapi.yml",
+    "sevalla-databases-api-openapi.yml",
+    "sevalla-deployments-api-openapi.yml",
+    "sevalla-object-storage-api-openapi.yml",
+    "sevalla-pipelines-api-openapi.yml",
+    "sevalla-static-sites-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
