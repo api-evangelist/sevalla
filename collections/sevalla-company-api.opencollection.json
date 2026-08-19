@@ -1,0 +1,88 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Sevalla Applications Company API",
+    "version": "v3"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Company",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get company usage data",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.sevalla.com/v3/company/usage",
+            "params": [
+              {
+                "name": "company",
+                "value": "",
+                "type": "query",
+                "description": "The company (organization) identifier to scope the request."
+              }
+            ]
+          },
+          "docs": "Get company usage data"
+        },
+        {
+          "info": {
+            "name": "List company users",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.sevalla.com/v3/company/users",
+            "params": [
+              {
+                "name": "company",
+                "value": "",
+                "type": "query",
+                "description": "The company (organization) identifier to scope the request."
+              }
+            ]
+          },
+          "docs": "List company users"
+        },
+        {
+          "info": {
+            "name": "List API keys",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.sevalla.com/v3/api-keys"
+          },
+          "docs": "List API keys"
+        },
+        {
+          "info": {
+            "name": "Create an API key",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.sevalla.com/v3/api-keys",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create an API key"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

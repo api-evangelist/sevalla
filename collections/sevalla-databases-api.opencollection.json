@@ -1,0 +1,134 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Sevalla Applications Databases API",
+    "version": "v3"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Databases",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List databases",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.sevalla.com/v3/databases",
+            "params": [
+              {
+                "name": "company",
+                "value": "",
+                "type": "query",
+                "description": "The company (organization) identifier to scope the request."
+              }
+            ]
+          },
+          "docs": "List databases"
+        },
+        {
+          "info": {
+            "name": "Create a database",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.sevalla.com/v3/databases",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a database"
+        },
+        {
+          "info": {
+            "name": "Get database details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.sevalla.com/v3/databases/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the resource."
+              }
+            ]
+          },
+          "docs": "Get database details"
+        },
+        {
+          "info": {
+            "name": "Delete a database",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.sevalla.com/v3/databases/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the resource."
+              }
+            ]
+          },
+          "docs": "Delete a database"
+        },
+        {
+          "info": {
+            "name": "List database backups",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.sevalla.com/v3/databases/:id/backups",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the resource."
+              }
+            ]
+          },
+          "docs": "List database backups"
+        },
+        {
+          "info": {
+            "name": "Create a database backup",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.sevalla.com/v3/databases/:id/backups",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the resource."
+              }
+            ]
+          },
+          "docs": "Create a database backup"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

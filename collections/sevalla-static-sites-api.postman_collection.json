@@ -1,0 +1,495 @@
+{
+  "item": [
+    {
+      "id": "40bc3cec-8727-4a70-837a-cf0e861246fd",
+      "name": "Static Sites",
+      "description": {
+        "content": "Build and deploy Git-backed static sites to the edge.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "e9b3f693-471d-48b6-815c-fb02884b3a5a",
+          "name": "List static sites",
+          "request": {
+            "name": "List static sites",
+            "description": {},
+            "url": {
+              "path": [
+                "static-sites"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "company",
+                  "value": "<string>",
+                  "description": "The company (organization) identifier to scope the request."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "39cf7b9f-ed7f-4f6e-ac74-e4466beb536e",
+              "name": "A list of static sites.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "static-sites"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "company",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"static_sites\": [\n    {\n      \"id\": \"string\",\n      \"name\": \"string\",\n      \"display_name\": \"string\",\n      \"repo_url\": \"string\",\n      \"branch\": \"string\",\n      \"build_command\": \"string\",\n      \"published_directory\": \"string\",\n      \"default_url\": \"string\",\n      \"status\": \"string\",\n      \"created_at\": \"1985-12-11T22:19:02.371Z\"\n    },\n    {\n      \"id\": \"string\",\n      \"name\": \"string\",\n      \"display_name\": \"string\",\n      \"repo_url\": \"string\",\n      \"branch\": \"string\",\n      \"build_command\": \"string\",\n      \"published_directory\": \"string\",\n      \"default_url\": \"string\",\n      \"status\": \"string\",\n      \"created_at\": \"1987-01-20T12:49:11.679Z\"\n    }\n  ],\n  \"total_count\": 659\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4f8ed8dc-279f-4f8d-855c-ec189fddfd7e",
+          "name": "Create a static site",
+          "request": {
+            "name": "Create a static site",
+            "description": {},
+            "url": {
+              "path": [
+                "static-sites"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"repo_url\": \"<string>\",\n  \"branch\": \"main\",\n  \"build_command\": \"<string>\",\n  \"published_directory\": \"/\",\n  \"auto_deploy\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "586aa40c-5314-4575-a8f4-d1d2d9dc7c38",
+              "name": "The created static site.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "static-sites"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"repo_url\": \"<string>\",\n  \"branch\": \"main\",\n  \"build_command\": \"<string>\",\n  \"published_directory\": \"/\",\n  \"auto_deploy\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"display_name\": \"string\",\n  \"repo_url\": \"string\",\n  \"branch\": \"string\",\n  \"build_command\": \"string\",\n  \"published_directory\": \"string\",\n  \"default_url\": \"string\",\n  \"status\": \"string\",\n  \"created_at\": \"2024-11-15T04:37:09.818Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4c2a02eb-6b7c-4ca3-b640-0e7a3b9ac059",
+          "name": "Get a static site",
+          "request": {
+            "name": "Get a static site",
+            "description": {},
+            "url": {
+              "path": [
+                "static-sites",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The unique identifier of the resource."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "08c57523-805a-439d-949f-4bb0dd38462b",
+              "name": "The static site.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "static-sites",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The unique identifier of the resource."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"display_name\": \"string\",\n  \"repo_url\": \"string\",\n  \"branch\": \"string\",\n  \"build_command\": \"string\",\n  \"published_directory\": \"string\",\n  \"default_url\": \"string\",\n  \"status\": \"string\",\n  \"created_at\": \"2024-11-15T04:37:09.818Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "16c1ef62-7216-4e15-9dfe-9f10b5185a78",
+          "name": "Delete a static site",
+          "request": {
+            "name": "Delete a static site",
+            "description": {},
+            "url": {
+              "path": [
+                "static-sites",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The unique identifier of the resource."
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "5172ae2c-0b9d-4a05-8de2-69faa20723ed",
+              "name": "The static site was deleted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "static-sites",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The unique identifier of the resource."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ec63f13b-8daf-47b1-b1e8-5128c3ced801",
+          "name": "Deploy a static site",
+          "request": {
+            "name": "Deploy a static site",
+            "description": {},
+            "url": {
+              "path": [
+                "static-sites",
+                ":id",
+                "deployments"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The unique identifier of the resource."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "3aa61f2a-9e78-4603-afa2-7508cc4f7954",
+              "name": "The triggered deployment.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "static-sites",
+                    ":id",
+                    "deployments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The unique identifier of the resource."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"status\": \"failed\",\n  \"commit_hash\": \"string\",\n  \"commit_message\": \"string\",\n  \"is_rollback\": true,\n  \"started_at\": \"2018-09-16T21:53:09.988Z\",\n  \"finished_at\": \"1982-08-11T06:17:17.885Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.sevalla.com/v3",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "ca1aebbe-8fa1-4462-84af-6c07eb1559e3",
+    "name": "Sevalla Applications Static Sites API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Sevalla API lets you deploy, scale, and manage your entire cloud infrastructure programmatically - applications, deployments, managed databases, static sites, S3-compatible object storage, pipelines, and operational metrics. Sevalla is a Kinsta product built on Google Cloud Platform and Cloudflare. A single API token authenticates every endpoint.\n\nContact Support:\n Name: Sevalla Support",
+      "type": "text/plain"
+    }
+  }
+}

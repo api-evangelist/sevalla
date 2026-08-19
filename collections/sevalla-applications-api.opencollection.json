@@ -1,0 +1,211 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Sevalla Applications API",
+    "version": "v3"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Applications",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List all applications",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.sevalla.com/v3/applications",
+            "params": [
+              {
+                "name": "company",
+                "value": "",
+                "type": "query",
+                "description": "The company (organization) identifier to scope the request."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of items to return."
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "Number of items to skip for pagination."
+              }
+            ]
+          },
+          "docs": "List all applications"
+        },
+        {
+          "info": {
+            "name": "Create a new application",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.sevalla.com/v3/applications",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new application"
+        },
+        {
+          "info": {
+            "name": "Retrieve application details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.sevalla.com/v3/applications/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the resource."
+              }
+            ]
+          },
+          "docs": "Retrieve application details"
+        },
+        {
+          "info": {
+            "name": "Update an application",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.sevalla.com/v3/applications/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the resource."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update an application"
+        },
+        {
+          "info": {
+            "name": "Delete an application",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.sevalla.com/v3/applications/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the resource."
+              }
+            ]
+          },
+          "docs": "Delete an application"
+        },
+        {
+          "info": {
+            "name": "Suspend a running application",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.sevalla.com/v3/applications/:id/suspend",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the resource."
+              }
+            ]
+          },
+          "docs": "Suspend a running application"
+        },
+        {
+          "info": {
+            "name": "Activate a suspended application",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.sevalla.com/v3/applications/:id/activate",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the resource."
+              }
+            ]
+          },
+          "docs": "Activate a suspended application"
+        },
+        {
+          "info": {
+            "name": "List environment variables",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.sevalla.com/v3/applications/:id/environment-variables",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the resource."
+              }
+            ]
+          },
+          "docs": "List environment variables"
+        },
+        {
+          "info": {
+            "name": "Create an environment variable",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.sevalla.com/v3/applications/:id/environment-variables",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the resource."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create an environment variable"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

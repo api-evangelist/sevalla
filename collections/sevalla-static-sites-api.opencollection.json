@@ -1,0 +1,115 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Sevalla Applications Static Sites API",
+    "version": "v3"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Static Sites",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List static sites",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.sevalla.com/v3/static-sites",
+            "params": [
+              {
+                "name": "company",
+                "value": "",
+                "type": "query",
+                "description": "The company (organization) identifier to scope the request."
+              }
+            ]
+          },
+          "docs": "List static sites"
+        },
+        {
+          "info": {
+            "name": "Create a static site",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.sevalla.com/v3/static-sites",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a static site"
+        },
+        {
+          "info": {
+            "name": "Get a static site",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.sevalla.com/v3/static-sites/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the resource."
+              }
+            ]
+          },
+          "docs": "Get a static site"
+        },
+        {
+          "info": {
+            "name": "Delete a static site",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.sevalla.com/v3/static-sites/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the resource."
+              }
+            ]
+          },
+          "docs": "Delete a static site"
+        },
+        {
+          "info": {
+            "name": "Deploy a static site",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.sevalla.com/v3/static-sites/:id/deployments",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the resource."
+              }
+            ]
+          },
+          "docs": "Deploy a static site"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

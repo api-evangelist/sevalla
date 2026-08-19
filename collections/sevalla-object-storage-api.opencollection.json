@@ -1,0 +1,115 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Sevalla Applications Object Storage API",
+    "version": "v3"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Object Storage",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List object storage buckets",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.sevalla.com/v3/object-storages",
+            "params": [
+              {
+                "name": "company",
+                "value": "",
+                "type": "query",
+                "description": "The company (organization) identifier to scope the request."
+              }
+            ]
+          },
+          "docs": "List object storage buckets"
+        },
+        {
+          "info": {
+            "name": "Create an object storage bucket",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.sevalla.com/v3/object-storages",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create an object storage bucket"
+        },
+        {
+          "info": {
+            "name": "Get an object storage bucket",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.sevalla.com/v3/object-storages/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the resource."
+              }
+            ]
+          },
+          "docs": "Get an object storage bucket"
+        },
+        {
+          "info": {
+            "name": "Delete an object storage bucket",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.sevalla.com/v3/object-storages/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the resource."
+              }
+            ]
+          },
+          "docs": "Delete an object storage bucket"
+        },
+        {
+          "info": {
+            "name": "List objects in a bucket",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.sevalla.com/v3/object-storages/:id/objects",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the resource."
+              }
+            ]
+          },
+          "docs": "List objects in a bucket"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
