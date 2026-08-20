@@ -24,6 +24,14 @@ accessModel:
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/sevalla.png
 tags:
 - Hosting
+- Platform-as-a-Service
+- Cloud
+- Deployment
+- Databases
+- Static Sites
+- Object Storage
+tags_raw:
+- Hosting
 - PaaS
 - Cloud
 - Deployment
@@ -40,6 +48,8 @@ apis:
   humanURL: https://api-docs.sevalla.com/
   baseURL: https://api.sevalla.com/v3
   tags:
+  - Application
+  tags_raw:
   - Applications
   properties:
   - type: OpenAPI
@@ -118,6 +128,8 @@ apis:
   humanURL: https://api-docs.sevalla.com/
   baseURL: https://api.sevalla.com/v3
   tags:
+  - Deployment
+  tags_raw:
   - Deployments
   properties:
   - type: OpenAPI
