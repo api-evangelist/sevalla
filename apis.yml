@@ -8,6 +8,18 @@ description: Sevalla is an application, database, and static-site hosting platfo
   Redis, Valkey), host static sites on a global edge, and run S3-compatible object
   storage. The public REST API (base https://api.sevalla.com/v3, Bearer API token)
   exposes 200+ endpoints to manage the entire platform programmatically.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: freemium
   onboarding: self-serve
