@@ -39,7 +39,7 @@ tags:
 - Platform-as-a-Service
 - Cloud
 - Deployment
-- Databases
+- Database
 - Static Sites
 - Object Storage
 tags_raw:
@@ -114,6 +114,8 @@ apis:
   humanURL: https://api-docs.sevalla.com/
   baseURL: https://api.sevalla.com/v3
   tags:
+  - Database
+  tags_raw:
   - Databases
   properties:
   - type: OpenAPI
