@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Sevalla Applications Static Sites API
+  title: Sevalla Static Sites API
   description: The Sevalla API lets you deploy, scale, and manage your entire cloud infrastructure programmatically - applications, deployments, managed databases, static sites, S3-compatible object storage, pipelines, and operational metrics. Sevalla is a Kinsta product built on Google Cloud Platform and Cloudflare. A single API token authenticates every endpoint.
   termsOfService: https://sevalla.com/legal/terms-of-service/
   contact:
@@ -89,27 +89,6 @@ paths:
                 $ref: '#/components/schemas/Deployment'
 components:
   schemas:
-    CreateStaticSiteRequest:
-      type: object
-      required:
-      - name
-      - repo_url
-      properties:
-        name:
-          type: string
-        repo_url:
-          type: string
-        branch:
-          type: string
-          default: main
-        build_command:
-          type: string
-        published_directory:
-          type: string
-          default: /
-        auto_deploy:
-          type: boolean
-          default: true
     StaticSiteList:
       type: object
       properties:
@@ -119,6 +98,30 @@ components:
             $ref: '#/components/schemas/StaticSite'
         total_count:
           type: integer
+    StaticSite:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        display_name:
+          type: string
+        repo_url:
+          type: string
+        branch:
+          type: string
+        build_command:
+          type: string
+        published_directory:
+          type: string
+        default_url:
+          type: string
+        status:
+          type: string
+        created_at:
+          type: string
+          format: date-time
     Deployment:
       type: object
       properties:
@@ -145,43 +148,40 @@ components:
         finished_at:
           type: string
           format: date-time
-    StaticSite:
+    CreateStaticSiteRequest:
       type: object
+      required:
+      - name
+      - repo_url
       properties:
-        id:
-          type: string
         name:
-          type: string
-        display_name:
           type: string
         repo_url:
           type: string
         branch:
           type: string
+          default: main
         build_command:
           type: string
         published_directory:
           type: string
-        default_url:
-          type: string
-        status:
-          type: string
-        created_at:
-          type: string
-          format: date-time
+          default: /
+        auto_deploy:
+          type: boolean
+          default: true
   parameters:
-    CompanyId:
-      name: company
-      in: query
-      required: false
-      description: The company (organization) identifier to scope the request.
-      schema:
-        type: string
     ResourceId:
       name: id
       in: path
       required: true
       description: The unique identifier of the resource.
+      schema:
+        type: string
+    CompanyId:
+      name: company
+      in: query
+      required: false
+      description: The company (organization) identifier to scope the request.
       schema:
         type: string
   securitySchemes:

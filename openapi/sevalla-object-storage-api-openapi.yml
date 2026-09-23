@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Sevalla Applications Object Storage API
+  title: Sevalla Object Storage API
   description: The Sevalla API lets you deploy, scale, and manage your entire cloud infrastructure programmatically - applications, deployments, managed databases, static sites, S3-compatible object storage, pipelines, and operational metrics. Sevalla is a Kinsta product built on Google Cloud Platform and Cloudflare. A single API token authenticates every endpoint.
   termsOfService: https://sevalla.com/legal/terms-of-service/
   contact:
@@ -93,34 +93,7 @@ paths:
                     items:
                       $ref: '#/components/schemas/StorageObject'
 components:
-  parameters:
-    CompanyId:
-      name: company
-      in: query
-      required: false
-      description: The company (organization) identifier to scope the request.
-      schema:
-        type: string
-    ResourceId:
-      name: id
-      in: path
-      required: true
-      description: The unique identifier of the resource.
-      schema:
-        type: string
   schemas:
-    CreateObjectStorageRequest:
-      type: object
-      required:
-      - name
-      properties:
-        name:
-          type: string
-        region:
-          type: string
-        public:
-          type: boolean
-          default: false
     ObjectStorage:
       type: object
       properties:
@@ -140,6 +113,18 @@ components:
         created_at:
           type: string
           format: date-time
+    CreateObjectStorageRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+        region:
+          type: string
+        public:
+          type: boolean
+          default: false
     StorageObject:
       type: object
       properties:
@@ -162,6 +147,21 @@ components:
             $ref: '#/components/schemas/ObjectStorage'
         total_count:
           type: integer
+  parameters:
+    ResourceId:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the resource.
+      schema:
+        type: string
+    CompanyId:
+      name: company
+      in: query
+      required: false
+      description: The company (organization) identifier to scope the request.
+      schema:
+        type: string
   securitySchemes:
     bearerAuth:
       type: http

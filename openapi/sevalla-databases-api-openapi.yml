@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Sevalla Applications Databases API
+  title: Sevalla Databases API
   description: The Sevalla API lets you deploy, scale, and manage your entire cloud infrastructure programmatically - applications, deployments, managed databases, static sites, S3-compatible object storage, pipelines, and operational metrics. Sevalla is a Kinsta product built on Google Cloud Platform and Cloudflare. A single API token authenticates every endpoint.
   termsOfService: https://sevalla.com/legal/terms-of-service/
   contact:
@@ -106,6 +106,24 @@ paths:
                 $ref: '#/components/schemas/Backup'
 components:
   schemas:
+    Backup:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+          - scheduled
+          - manual
+        status:
+          type: string
+        size_bytes:
+          type: integer
+          format: int64
+        created_at:
+          type: string
+          format: date-time
     CreateDatabaseRequest:
       type: object
       required:
@@ -130,33 +148,6 @@ components:
           type: string
         cluster:
           type: string
-    Backup:
-      type: object
-      properties:
-        id:
-          type: string
-        type:
-          type: string
-          enum:
-          - scheduled
-          - manual
-        status:
-          type: string
-        size_bytes:
-          type: integer
-          format: int64
-        created_at:
-          type: string
-          format: date-time
-    DatabaseList:
-      type: object
-      properties:
-        databases:
-          type: array
-          items:
-            $ref: '#/components/schemas/Database'
-        total_count:
-          type: integer
     Database:
       type: object
       properties:
@@ -192,19 +183,28 @@ components:
         created_at:
           type: string
           format: date-time
+    DatabaseList:
+      type: object
+      properties:
+        databases:
+          type: array
+          items:
+            $ref: '#/components/schemas/Database'
+        total_count:
+          type: integer
   parameters:
-    CompanyId:
-      name: company
-      in: query
-      required: false
-      description: The company (organization) identifier to scope the request.
-      schema:
-        type: string
     ResourceId:
       name: id
       in: path
       required: true
       description: The unique identifier of the resource.
+      schema:
+        type: string
+    CompanyId:
+      name: company
+      in: query
+      required: false
+      description: The company (organization) identifier to scope the request.
       schema:
         type: string
   securitySchemes:
