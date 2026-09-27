@@ -163,7 +163,82 @@ paths:
               schema:
                 $ref: '#/components/schemas/EnvironmentVariable'
 components:
+  parameters:
+    Limit:
+      name: limit
+      in: query
+      required: false
+      description: Maximum number of items to return.
+      schema:
+        type: integer
+        default: 20
+        maximum: 100
+    CompanyId:
+      name: company
+      in: query
+      required: false
+      description: The company (organization) identifier to scope the request.
+      schema:
+        type: string
+    Offset:
+      name: offset
+      in: query
+      required: false
+      description: Number of items to skip for pagination.
+      schema:
+        type: integer
+        default: 0
+    ResourceId:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the resource.
+      schema:
+        type: string
   schemas:
+    EnvironmentVariable:
+      type: object
+      required:
+      - key
+      - value
+      properties:
+        id:
+          type: string
+        key:
+          type: string
+        value:
+          type: string
+        is_available_during_runtime:
+          type: boolean
+          default: true
+        is_available_during_build:
+          type: boolean
+          default: true
+    OperationStatus:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+          enum:
+          - pending
+          - running
+          - success
+          - failed
+        message:
+          type: string
+    UpdateApplicationRequest:
+      type: object
+      properties:
+        display_name:
+          type: string
+        branch:
+          type: string
+        auto_deploy:
+          type: boolean
+        pod_size:
+          type: string
     CreateApplicationRequest:
       type: object
       required:
@@ -195,6 +270,27 @@ components:
           type: object
           additionalProperties:
             type: string
+    Error:
+      type: object
+      properties:
+        status:
+          type: integer
+          description: HTTP status code.
+        message:
+          type: string
+          description: Human-readable error message.
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              key:
+                type: string
+              message:
+                type: string
+      required:
+      - status
+      - message
     Application:
       type: object
       properties:
@@ -228,59 +324,6 @@ components:
         updated_at:
           type: string
           format: date-time
-    OperationStatus:
-      type: object
-      properties:
-        id:
-          type: string
-        status:
-          type: string
-          enum:
-          - pending
-          - running
-          - success
-          - failed
-        message:
-          type: string
-    Error:
-      type: object
-      properties:
-        status:
-          type: integer
-          description: HTTP status code.
-        message:
-          type: string
-          description: Human-readable error message.
-        errors:
-          type: array
-          items:
-            type: object
-            properties:
-              key:
-                type: string
-              message:
-                type: string
-      required:
-      - status
-      - message
-    EnvironmentVariable:
-      type: object
-      required:
-      - key
-      - value
-      properties:
-        id:
-          type: string
-        key:
-          type: string
-        value:
-          type: string
-        is_available_during_runtime:
-          type: boolean
-          default: true
-        is_available_during_build:
-          type: boolean
-          default: true
     ApplicationList:
       type: object
       properties:
@@ -290,17 +333,6 @@ components:
             $ref: '#/components/schemas/Application'
         total_count:
           type: integer
-    UpdateApplicationRequest:
-      type: object
-      properties:
-        display_name:
-          type: string
-        branch:
-          type: string
-        auto_deploy:
-          type: boolean
-        pod_size:
-          type: string
   responses:
     NotFound:
       description: The requested resource was not found.
@@ -308,38 +340,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-  parameters:
-    Offset:
-      name: offset
-      in: query
-      required: false
-      description: Number of items to skip for pagination.
-      schema:
-        type: integer
-        default: 0
-    Limit:
-      name: limit
-      in: query
-      required: false
-      description: Maximum number of items to return.
-      schema:
-        type: integer
-        default: 20
-        maximum: 100
-    ResourceId:
-      name: id
-      in: path
-      required: true
-      description: The unique identifier of the resource.
-      schema:
-        type: string
-    CompanyId:
-      name: company
-      in: query
-      required: false
-      description: The company (organization) identifier to scope the request.
-      schema:
-        type: string
   securitySchemes:
     bearerAuth:
       type: http
