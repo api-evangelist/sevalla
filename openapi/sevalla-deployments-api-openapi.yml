@@ -82,6 +82,21 @@ paths:
               schema:
                 $ref: '#/components/schemas/Deployment'
 components:
+  parameters:
+    DeploymentId:
+      name: deploymentId
+      in: path
+      required: true
+      description: The unique identifier of the deployment.
+      schema:
+        type: string
+    ResourceId:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the resource.
+      schema:
+        type: string
   schemas:
     Deployment:
       type: object
@@ -109,15 +124,6 @@ components:
         finished_at:
           type: string
           format: date-time
-    DeploymentList:
-      type: object
-      properties:
-        deployments:
-          type: array
-          items:
-            $ref: '#/components/schemas/Deployment'
-        total_count:
-          type: integer
     CreateDeploymentRequest:
       type: object
       properties:
@@ -128,21 +134,15 @@ components:
         clear_cache:
           type: boolean
           default: false
-  parameters:
-    DeploymentId:
-      name: deploymentId
-      in: path
-      required: true
-      description: The unique identifier of the deployment.
-      schema:
-        type: string
-    ResourceId:
-      name: id
-      in: path
-      required: true
-      description: The unique identifier of the resource.
-      schema:
-        type: string
+    DeploymentList:
+      type: object
+      properties:
+        deployments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Deployment'
+        total_count:
+          type: integer
   securitySchemes:
     bearerAuth:
       type: http

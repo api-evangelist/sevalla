@@ -89,30 +89,6 @@ paths:
                 $ref: '#/components/schemas/Deployment'
 components:
   schemas:
-    StaticSite:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        display_name:
-          type: string
-        repo_url:
-          type: string
-        branch:
-          type: string
-        build_command:
-          type: string
-        published_directory:
-          type: string
-        default_url:
-          type: string
-        status:
-          type: string
-        created_at:
-          type: string
-          format: date-time
     Deployment:
       type: object
       properties:
@@ -169,19 +145,43 @@ components:
         auto_deploy:
           type: boolean
           default: true
+    StaticSite:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        display_name:
+          type: string
+        repo_url:
+          type: string
+        branch:
+          type: string
+        build_command:
+          type: string
+        published_directory:
+          type: string
+        default_url:
+          type: string
+        status:
+          type: string
+        created_at:
+          type: string
+          format: date-time
   parameters:
-    CompanyId:
-      name: company
-      in: query
-      required: false
-      description: The company (organization) identifier to scope the request.
-      schema:
-        type: string
     ResourceId:
       name: id
       in: path
       required: true
       description: The unique identifier of the resource.
+      schema:
+        type: string
+    CompanyId:
+      name: company
+      in: query
+      required: false
+      description: The company (organization) identifier to scope the request.
       schema:
         type: string
   securitySchemes:

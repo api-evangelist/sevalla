@@ -84,6 +84,24 @@ paths:
                 $ref: '#/components/schemas/OperationStatus'
 components:
   schemas:
+    CreatePipelineRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+        project_id:
+          type: string
+    PipelineStage:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        order:
+          type: integer
     Pipeline:
       type: object
       properties:
@@ -114,37 +132,19 @@ components:
           - failed
         message:
           type: string
-    CreatePipelineRequest:
-      type: object
-      required:
-      - name
-      properties:
-        name:
-          type: string
-        project_id:
-          type: string
-    PipelineStage:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        order:
-          type: integer
   parameters:
-    CompanyId:
-      name: company
-      in: query
-      required: false
-      description: The company (organization) identifier to scope the request.
-      schema:
-        type: string
     ResourceId:
       name: id
       in: path
       required: true
       description: The unique identifier of the resource.
+      schema:
+        type: string
+    CompanyId:
+      name: company
+      in: query
+      required: false
+      description: The company (organization) identifier to scope the request.
       schema:
         type: string
   securitySchemes:

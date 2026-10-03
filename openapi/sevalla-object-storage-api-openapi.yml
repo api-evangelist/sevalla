@@ -148,18 +148,18 @@ components:
         etag:
           type: string
   parameters:
-    CompanyId:
-      name: company
-      in: query
-      required: false
-      description: The company (organization) identifier to scope the request.
-      schema:
-        type: string
     ResourceId:
       name: id
       in: path
       required: true
       description: The unique identifier of the resource.
+      schema:
+        type: string
+    CompanyId:
+      name: company
+      in: query
+      required: false
+      description: The company (organization) identifier to scope the request.
       schema:
         type: string
   securitySchemes:

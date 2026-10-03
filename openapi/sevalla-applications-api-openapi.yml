@@ -173,13 +173,6 @@ components:
         type: integer
         default: 20
         maximum: 100
-    CompanyId:
-      name: company
-      in: query
-      required: false
-      description: The company (organization) identifier to scope the request.
-      schema:
-        type: string
     Offset:
       name: offset
       in: query
@@ -195,81 +188,14 @@ components:
       description: The unique identifier of the resource.
       schema:
         type: string
+    CompanyId:
+      name: company
+      in: query
+      required: false
+      description: The company (organization) identifier to scope the request.
+      schema:
+        type: string
   schemas:
-    EnvironmentVariable:
-      type: object
-      required:
-      - key
-      - value
-      properties:
-        id:
-          type: string
-        key:
-          type: string
-        value:
-          type: string
-        is_available_during_runtime:
-          type: boolean
-          default: true
-        is_available_during_build:
-          type: boolean
-          default: true
-    OperationStatus:
-      type: object
-      properties:
-        id:
-          type: string
-        status:
-          type: string
-          enum:
-          - pending
-          - running
-          - success
-          - failed
-        message:
-          type: string
-    UpdateApplicationRequest:
-      type: object
-      properties:
-        display_name:
-          type: string
-        branch:
-          type: string
-        auto_deploy:
-          type: boolean
-        pod_size:
-          type: string
-    CreateApplicationRequest:
-      type: object
-      required:
-      - name
-      - repo_url
-      properties:
-        name:
-          type: string
-        repo_url:
-          type: string
-        branch:
-          type: string
-          default: main
-        auto_deploy:
-          type: boolean
-          default: true
-        build_type:
-          type: string
-          enum:
-          - buildpacks
-          - dockerfile
-          - nixpacks
-        pod_size:
-          type: string
-          description: Pod size code, e.g. hobby, s1, s2, c1.
-        cluster:
-          type: string
-        env:
-          type: object
-          additionalProperties:
-            type: string
     Error:
       type: object
       properties:
@@ -324,6 +250,55 @@ components:
         updated_at:
           type: string
           format: date-time
+    EnvironmentVariable:
+      type: object
+      required:
+      - key
+      - value
+      properties:
+        id:
+          type: string
+        key:
+          type: string
+        value:
+          type: string
+        is_available_during_runtime:
+          type: boolean
+          default: true
+        is_available_during_build:
+          type: boolean
+          default: true
+    CreateApplicationRequest:
+      type: object
+      required:
+      - name
+      - repo_url
+      properties:
+        name:
+          type: string
+        repo_url:
+          type: string
+        branch:
+          type: string
+          default: main
+        auto_deploy:
+          type: boolean
+          default: true
+        build_type:
+          type: string
+          enum:
+          - buildpacks
+          - dockerfile
+          - nixpacks
+        pod_size:
+          type: string
+          description: Pod size code, e.g. hobby, s1, s2, c1.
+        cluster:
+          type: string
+        env:
+          type: object
+          additionalProperties:
+            type: string
     ApplicationList:
       type: object
       properties:
@@ -333,6 +308,31 @@ components:
             $ref: '#/components/schemas/Application'
         total_count:
           type: integer
+    OperationStatus:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+          enum:
+          - pending
+          - running
+          - success
+          - failed
+        message:
+          type: string
+    UpdateApplicationRequest:
+      type: object
+      properties:
+        display_name:
+          type: string
+        branch:
+          type: string
+        auto_deploy:
+          type: boolean
+        pod_size:
+          type: string
   responses:
     NotFound:
       description: The requested resource was not found.

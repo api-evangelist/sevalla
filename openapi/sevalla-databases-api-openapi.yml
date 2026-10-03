@@ -106,48 +106,6 @@ paths:
                 $ref: '#/components/schemas/Backup'
 components:
   schemas:
-    Backup:
-      type: object
-      properties:
-        id:
-          type: string
-        type:
-          type: string
-          enum:
-          - scheduled
-          - manual
-        status:
-          type: string
-        size_bytes:
-          type: integer
-          format: int64
-        created_at:
-          type: string
-          format: date-time
-    CreateDatabaseRequest:
-      type: object
-      required:
-      - name
-      - type
-      - resource_type
-      properties:
-        name:
-          type: string
-        type:
-          type: string
-          enum:
-          - postgresql
-          - mysql
-          - mariadb
-          - mongodb
-          - redis
-          - valkey
-        version:
-          type: string
-        resource_type:
-          type: string
-        cluster:
-          type: string
     Database:
       type: object
       properties:
@@ -192,19 +150,61 @@ components:
             $ref: '#/components/schemas/Database'
         total_count:
           type: integer
+    Backup:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+          - scheduled
+          - manual
+        status:
+          type: string
+        size_bytes:
+          type: integer
+          format: int64
+        created_at:
+          type: string
+          format: date-time
+    CreateDatabaseRequest:
+      type: object
+      required:
+      - name
+      - type
+      - resource_type
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+          - postgresql
+          - mysql
+          - mariadb
+          - mongodb
+          - redis
+          - valkey
+        version:
+          type: string
+        resource_type:
+          type: string
+        cluster:
+          type: string
   parameters:
-    CompanyId:
-      name: company
-      in: query
-      required: false
-      description: The company (organization) identifier to scope the request.
-      schema:
-        type: string
     ResourceId:
       name: id
       in: path
       required: true
       description: The unique identifier of the resource.
+      schema:
+        type: string
+    CompanyId:
+      name: company
+      in: query
+      required: false
+      description: The company (organization) identifier to scope the request.
       schema:
         type: string
   securitySchemes:
