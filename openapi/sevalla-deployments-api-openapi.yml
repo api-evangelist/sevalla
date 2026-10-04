@@ -83,13 +83,6 @@ paths:
                 $ref: '#/components/schemas/Deployment'
 components:
   parameters:
-    DeploymentId:
-      name: deploymentId
-      in: path
-      required: true
-      description: The unique identifier of the deployment.
-      schema:
-        type: string
     ResourceId:
       name: id
       in: path
@@ -97,7 +90,24 @@ components:
       description: The unique identifier of the resource.
       schema:
         type: string
+    DeploymentId:
+      name: deploymentId
+      in: path
+      required: true
+      description: The unique identifier of the deployment.
+      schema:
+        type: string
   schemas:
+    CreateDeploymentRequest:
+      type: object
+      properties:
+        branch:
+          type: string
+        commit_hash:
+          type: string
+        clear_cache:
+          type: boolean
+          default: false
     Deployment:
       type: object
       properties:
@@ -124,16 +134,6 @@ components:
         finished_at:
           type: string
           format: date-time
-    CreateDeploymentRequest:
-      type: object
-      properties:
-        branch:
-          type: string
-        commit_hash:
-          type: string
-        clear_cache:
-          type: boolean
-          default: false
     DeploymentList:
       type: object
       properties:

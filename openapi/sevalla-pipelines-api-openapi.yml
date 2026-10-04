@@ -83,6 +83,21 @@ paths:
               schema:
                 $ref: '#/components/schemas/OperationStatus'
 components:
+  parameters:
+    ResourceId:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the resource.
+      schema:
+        type: string
+    CompanyId:
+      name: company
+      in: query
+      required: false
+      description: The company (organization) identifier to scope the request.
+      schema:
+        type: string
   schemas:
     CreatePipelineRequest:
       type: object
@@ -92,6 +107,20 @@ components:
         name:
           type: string
         project_id:
+          type: string
+    OperationStatus:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+          enum:
+          - pending
+          - running
+          - success
+          - failed
+        message:
           type: string
     PipelineStage:
       type: object
@@ -118,35 +147,6 @@ components:
         created_at:
           type: string
           format: date-time
-    OperationStatus:
-      type: object
-      properties:
-        id:
-          type: string
-        status:
-          type: string
-          enum:
-          - pending
-          - running
-          - success
-          - failed
-        message:
-          type: string
-  parameters:
-    ResourceId:
-      name: id
-      in: path
-      required: true
-      description: The unique identifier of the resource.
-      schema:
-        type: string
-    CompanyId:
-      name: company
-      in: query
-      required: false
-      description: The company (organization) identifier to scope the request.
-      schema:
-        type: string
   securitySchemes:
     bearerAuth:
       type: http

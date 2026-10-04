@@ -96,6 +96,24 @@ paths:
                 $ref: '#/components/schemas/ApiKey'
 components:
   schemas:
+    ApiKey:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        role:
+          type: string
+        last_used_at:
+          type: string
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+        token:
+          type: string
+          description: The token value, returned only on creation.
     Usage:
       type: object
       properties:
@@ -143,24 +161,6 @@ components:
           type: string
         role:
           type: string
-    ApiKey:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        role:
-          type: string
-        last_used_at:
-          type: string
-          format: date-time
-        created_at:
-          type: string
-          format: date-time
-        token:
-          type: string
-          description: The token value, returned only on creation.
   parameters:
     CompanyId:
       name: company

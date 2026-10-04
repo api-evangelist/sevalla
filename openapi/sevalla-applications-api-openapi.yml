@@ -163,7 +163,29 @@ paths:
               schema:
                 $ref: '#/components/schemas/EnvironmentVariable'
 components:
+  responses:
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   parameters:
+    ResourceId:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the resource.
+      schema:
+        type: string
+    Offset:
+      name: offset
+      in: query
+      required: false
+      description: Number of items to skip for pagination.
+      schema:
+        type: integer
+        default: 0
     Limit:
       name: limit
       in: query
@@ -173,21 +195,6 @@ components:
         type: integer
         default: 20
         maximum: 100
-    Offset:
-      name: offset
-      in: query
-      required: false
-      description: Number of items to skip for pagination.
-      schema:
-        type: integer
-        default: 0
-    ResourceId:
-      name: id
-      in: path
-      required: true
-      description: The unique identifier of the resource.
-      schema:
-        type: string
     CompanyId:
       name: company
       in: query
@@ -196,6 +203,89 @@ components:
       schema:
         type: string
   schemas:
+    EnvironmentVariable:
+      type: object
+      required:
+      - key
+      - value
+      properties:
+        id:
+          type: string
+        key:
+          type: string
+        value:
+          type: string
+        is_available_during_runtime:
+          type: boolean
+          default: true
+        is_available_during_build:
+          type: boolean
+          default: true
+    OperationStatus:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+          enum:
+          - pending
+          - running
+          - success
+          - failed
+        message:
+          type: string
+    ApplicationList:
+      type: object
+      properties:
+        applications:
+          type: array
+          items:
+            $ref: '#/components/schemas/Application'
+        total_count:
+          type: integer
+    UpdateApplicationRequest:
+      type: object
+      properties:
+        display_name:
+          type: string
+        branch:
+          type: string
+        auto_deploy:
+          type: boolean
+        pod_size:
+          type: string
+    CreateApplicationRequest:
+      type: object
+      required:
+      - name
+      - repo_url
+      properties:
+        name:
+          type: string
+        repo_url:
+          type: string
+        branch:
+          type: string
+          default: main
+        auto_deploy:
+          type: boolean
+          default: true
+        build_type:
+          type: string
+          enum:
+          - buildpacks
+          - dockerfile
+          - nixpacks
+        pod_size:
+          type: string
+          description: Pod size code, e.g. hobby, s1, s2, c1.
+        cluster:
+          type: string
+        env:
+          type: object
+          additionalProperties:
+            type: string
     Error:
       type: object
       properties:
@@ -250,96 +340,6 @@ components:
         updated_at:
           type: string
           format: date-time
-    EnvironmentVariable:
-      type: object
-      required:
-      - key
-      - value
-      properties:
-        id:
-          type: string
-        key:
-          type: string
-        value:
-          type: string
-        is_available_during_runtime:
-          type: boolean
-          default: true
-        is_available_during_build:
-          type: boolean
-          default: true
-    CreateApplicationRequest:
-      type: object
-      required:
-      - name
-      - repo_url
-      properties:
-        name:
-          type: string
-        repo_url:
-          type: string
-        branch:
-          type: string
-          default: main
-        auto_deploy:
-          type: boolean
-          default: true
-        build_type:
-          type: string
-          enum:
-          - buildpacks
-          - dockerfile
-          - nixpacks
-        pod_size:
-          type: string
-          description: Pod size code, e.g. hobby, s1, s2, c1.
-        cluster:
-          type: string
-        env:
-          type: object
-          additionalProperties:
-            type: string
-    ApplicationList:
-      type: object
-      properties:
-        applications:
-          type: array
-          items:
-            $ref: '#/components/schemas/Application'
-        total_count:
-          type: integer
-    OperationStatus:
-      type: object
-      properties:
-        id:
-          type: string
-        status:
-          type: string
-          enum:
-          - pending
-          - running
-          - success
-          - failed
-        message:
-          type: string
-    UpdateApplicationRequest:
-      type: object
-      properties:
-        display_name:
-          type: string
-        branch:
-          type: string
-        auto_deploy:
-          type: boolean
-        pod_size:
-          type: string
-  responses:
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   securitySchemes:
     bearerAuth:
       type: http

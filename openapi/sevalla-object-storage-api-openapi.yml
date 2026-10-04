@@ -93,7 +93,56 @@ paths:
                     items:
                       $ref: '#/components/schemas/StorageObject'
 components:
+  parameters:
+    ResourceId:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the resource.
+      schema:
+        type: string
+    CompanyId:
+      name: company
+      in: query
+      required: false
+      description: The company (organization) identifier to scope the request.
+      schema:
+        type: string
   schemas:
+    CreateObjectStorageRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+        region:
+          type: string
+        public:
+          type: boolean
+          default: false
+    StorageObject:
+      type: object
+      properties:
+        key:
+          type: string
+        size_bytes:
+          type: integer
+          format: int64
+        last_modified:
+          type: string
+          format: date-time
+        etag:
+          type: string
+    ObjectStorageList:
+      type: object
+      properties:
+        object_storages:
+          type: array
+          items:
+            $ref: '#/components/schemas/ObjectStorage'
+        total_count:
+          type: integer
     ObjectStorage:
       type: object
       properties:
@@ -113,55 +162,6 @@ components:
         created_at:
           type: string
           format: date-time
-    CreateObjectStorageRequest:
-      type: object
-      required:
-      - name
-      properties:
-        name:
-          type: string
-        region:
-          type: string
-        public:
-          type: boolean
-          default: false
-    ObjectStorageList:
-      type: object
-      properties:
-        object_storages:
-          type: array
-          items:
-            $ref: '#/components/schemas/ObjectStorage'
-        total_count:
-          type: integer
-    StorageObject:
-      type: object
-      properties:
-        key:
-          type: string
-        size_bytes:
-          type: integer
-          format: int64
-        last_modified:
-          type: string
-          format: date-time
-        etag:
-          type: string
-  parameters:
-    ResourceId:
-      name: id
-      in: path
-      required: true
-      description: The unique identifier of the resource.
-      schema:
-        type: string
-    CompanyId:
-      name: company
-      in: query
-      required: false
-      description: The company (organization) identifier to scope the request.
-      schema:
-        type: string
   securitySchemes:
     bearerAuth:
       type: http
