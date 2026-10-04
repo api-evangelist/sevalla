@@ -243,6 +243,9 @@ apis:
   - type: Documentation
     url: https://docs.sevalla.com/
 common:
+- type: CapabilityMap
+  url: capabilities/sevalla-capability-edges.yml
+  name: Sevalla Business Capability Map
 - type: AgenticAccess
   url: agentic-access/sevalla-agentic-access.yml
 - type: DomainSecurity

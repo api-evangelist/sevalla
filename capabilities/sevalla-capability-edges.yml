@@ -1,0 +1,77 @@
+slug: sevalla
+provider: Sevalla
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 6
+edges:
+- tag: Deployments
+  spec_file: sevalla-deployments-api-openapi.yml
+  capability_id: BC-4210.40
+  capability_id_l1: BC-4210
+  capability_name: Deployment Orchestration
+  confidence: 0.85
+  evidence: POST /applications/{id}/deployments  createDeployment  Trigger a new deployment; .../rollback  rollbackDeployment  Roll
+    back to a previous deployment
+  reason: Triggering deployments to the running service and rolling back to a previous deployment is deployment
+    orchestration — delivering software changes to production with controlled blast radius.
+- tag: Databases
+  spec_file: sevalla-databases-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.8
+  evidence: POST /databases  createDatabase  Create a database; GET /databases/{id}/backups  listBackups
+  reason: Provisioning and backup of managed database instances on a cloud platform — compute/storage
+    infrastructure provisioning, mapping to IT Infrastructure Management. Not Data Governance/MDM, as
+    no data content or quality is managed.
+- tag: Object Storage
+  spec_file: sevalla-object-storage-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.8
+  evidence: POST /object-storages  createObjectStorage  Create an object storage bucket
+  reason: Creation and management of S3-compatible storage buckets and listing of objects — cloud storage
+    infrastructure provisioning, i.e. IT Infrastructure Management.
+- tag: Applications
+  spec_file: sevalla-applications-api-openapi.yml
+  capability_id: BC-600.60
+  capability_id_l1: BC-600
+  capability_name: IT Application Management
+  confidence: 0.78
+  evidence: POST /applications  createApplication  Create a new application; POST /applications/{id}/suspend  suspendApplication
+  reason: Operations create, update, suspend, activate and delete hosted applications and their environment
+    variables on a PaaS — application lifecycle management on cloud infrastructure, i.e. IT Application
+    Management. Some overlap with IT Infrastructure Management, hence moderate confidence.
+- tag: Pipelines
+  spec_file: sevalla-pipelines-api-openapi.yml
+  capability_id: BC-4210.10
+  capability_id_l1: BC-4210
+  capability_name: Continuous Integration Management
+  confidence: 0.7
+  evidence: POST /pipelines  createPipeline; POST /pipelines/{id}/promote  Promote an application between
+    pipeline stages
+  reason: Build/delivery pipeline creation plus promotion of an application between pipeline stages. Clearly
+    release/deployment pipeline tooling under BC-4210; the sub-capability could arguably be Continuous
+    Integration (pipeline definition) or Deployment Orchestration (stage promotion), so confidence on
+    the L2 is moderate.
+- tag: Static Sites
+  spec_file: sevalla-static-sites-api-openapi.yml
+  capability_id: BC-600.60
+  capability_id_l1: BC-600
+  capability_name: IT Application Management
+  confidence: 0.7
+  evidence: POST /static-sites  createStaticSite; POST /static-sites/{id}/deployments  deployStaticSite  Deploy
+    a static site
+  reason: Create, retrieve, delete and deploy statically hosted sites on the edge — hosting lifecycle
+    for a web application artefact, closest to IT Application Management with some deployment flavour;
+    moderate confidence given the split between application and deployment framing.
