@@ -1,0 +1,19 @@
+edges:
+- partner_name: Amazon Web Services
+  partner: amazon-web-services
+  partner_match: shape-anchor
+  channel: provider-built
+  relationship: compatible
+  direction: provider-built
+  shape: aws-s3
+  type: contract
+  degree: declared-unqualified
+  evidence: https://github.com/api-evangelist/sevalla/blob/main/openapi/sevalla-applications-api-openapi.yml#L4
+  evidence_kind: own-contract
+  quote: 'description: The Sevalla API lets you deploy, scale, and manage your entire cloud infrastructure programmatically
+    - applications, deployments, managed databases, static sites, S3-compatible object storage, pipelines, and operational
+    metrics'
+  detected_by: sweep-shape-compat.py
+  first_seen: '2026-10-13'
+generated: '2026-10-13'
+method: searched
