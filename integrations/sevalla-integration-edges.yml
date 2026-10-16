@@ -30,7 +30,7 @@ edges:
     registered_name: io.github.sevalla-hosting/mcp
     register_id: io.github.sevalla-hosting/mcp
     detected_by: sweep-agent-tools.py
-    detected: '2026-10-14'
+    detected: '2026-10-15'
   mcp_registry:
     servers:
     - io.github.sevalla-hosting/mcp
