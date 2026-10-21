@@ -30,7 +30,7 @@ edges:
     registered_name: io.github.sevalla-hosting/mcp
     register_id: io.github.sevalla-hosting/mcp
     detected_by: sweep-agent-tools.py
-    detected: '2026-10-15'
+    detected: '2026-10-19'
   mcp_registry:
     servers:
     - io.github.sevalla-hosting/mcp
@@ -46,7 +46,27 @@ edges:
   - remote-domain
   detected_by: sweep-agent-tools.py
   first_seen: '2026-10-14'
+- partner_name: Terraform (terraform-registry)
+  partner: terraform
+  partner_match: mirror
+  mirror_match: register
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: terraform-registry
+  evidence: https://registry.terraform.io/providers/sevalla-hosting/sevalla
+  mirror_of: terraform/integrations/terraform-integration-edges.yml
+  apps:
+  - sevalla-hosting/sevalla
+  listing_count: 1
+  detected: '2026-10-21'
+  detected_by: mirror-platform-listings.py
+  category: infrastructure-as-code provider registry listing
 generated: '2026-10-13'
 method: searched
 checked:
 - https://registry.modelcontextprotocol.io/v0/servers
+- terraform/integrations/terraform-integration-edges.yml
+source:
+- terraform/integrations/terraform-integration-edges.yml
